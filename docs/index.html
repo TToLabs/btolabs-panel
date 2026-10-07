@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Panel BToLabs</title>
+<!--
+  Panel interno de BToLabs (solo lectura).
+  - Los datos viven en datos.json. La web y la APK los leen al abrir: un cambio publicado se ve al instante sin reinstalar.
+  - En la APK se piden a la URL publicada (DATOS_REMOTOS); si no hay red, se usa la última copia guardada o la que viene dentro de la app.
+  - Sin contraseñas: el estado de los accesos se describe, nunca se guardan claves.
+  - Descargas: PDF con la vista de impresión del navegador y CSV. En la APK abren la versión web en el navegador del teléfono.
+-->
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--ink:#0f172a;--muted:#5b6678;--line:#e2e8f0;--acc:#1f4e9c;--acc2:#e8effa;
+  --ok:#15803d;--okb:#e7f6ec;--mid:#a16207;--midb:#fef6dc;--bad:#b42318;--badb:#fdecea;--side:#0b1b3a;--sidet:#c9d4e8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--card:#121b2d;--ink:#e8edf5;--muted:#9aa7bb;--line:#1f2b40;--acc:#7aa7ef;--acc2:#16233d;
+  --ok:#4ade80;--okb:#0f2a1a;--mid:#facc15;--midb:#2a2410;--bad:#f87171;--badb:#2d1414;--side:#060d1b;--sidet:#9fb0cc}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--acc)}
+.app{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh}
+.side{background:var(--side);color:var(--sidet);padding:24px 14px;position:sticky;top:0;height:100vh;overflow:auto}
+.marca{font-weight:800;font-size:18px;color:#fff;margin:0 10px 4px}
+.marca small{display:block;font-weight:500;font-size:12px;color:var(--sidet);opacity:.8}
+.menu{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:2px}
+.menu button{all:unset;box-sizing:border-box;width:100%;display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px}
+.menu button:hover{background:rgba(255,255,255,.07);color:#fff}
+.menu button[aria-current="page"]{background:#1f4e9c;color:#fff}
+.menu button:focus-visible{outline:2px solid #7aa7ef;outline-offset:2px}
+.side .pie{margin:24px 10px 0;font-size:12px;opacity:.8}
+main{padding:28px clamp(16px,3vw,40px) 48px;min-width:0}
+.top{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;margin-bottom:22px}
+h1{font-size:clamp(24px,3vw,32px);line-height:1.15;margin:0;letter-spacing:-.02em}
+.sub{color:var(--muted);margin:6px 0 0;font-size:14px}
+.acciones{display:flex;gap:8px;flex-wrap:wrap}
+.btn{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.btn:hover{border-color:var(--acc)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;min-width:0}
+.card h2{font-size:17px;margin:0 0 12px}
+.card h3{font-size:15px;margin:16px 0 8px}
+.kpi b{display:block;font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.kpi span{color:var(--muted);font-size:13px}
+.nota{display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;font-weight:800;font-size:20px;flex:none}
+.bien{color:var(--ok);background:var(--okb)}.medio{color:var(--mid);background:var(--midb)}.mal{color:var(--bad);background:var(--badb)}
+.chip{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700}
+.fila{display:flex;gap:14px;align-items:center}
+.barra{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:4px}
+.barra i{display:block;height:100%;border-radius:99px}
+.metr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;font-size:14px;margin:0}
+.metr dt{color:var(--muted)}.metr dd{margin:0;font-weight:700;text-align:right}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.tabla{overflow-x:auto}
+ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
+.vacio{color:var(--muted);font-style:italic}
+.aviso{border-left:4px solid var(--mid);background:var(--midb);padding:12px 14px;border-radius:10px;font-size:14px;margin-bottom:16px}
+.pend{color:var(--muted);font-weight:600}
+.solo-print{display:none}
+.estado{padding:40px;text-align:center;color:var(--muted)}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .side{position:sticky;top:0;z-index:5;height:auto;padding:12px 12px 8px;padding-top:max(12px,env(safe-area-inset-top))}
+  .side .pie{display:none}
+  .marca{font-size:16px;margin:0 4px}
+  .menu{grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto;margin-top:10px;padding-bottom:4px;scrollbar-width:none}
+  .menu button{padding:8px 12px}
+  main{padding-top:20px}
+}
+@media print{
+  @page{size:letter;margin:16mm}
+  body{background:#fff;color:#000;font-size:12px}
+  .side,.acciones,.no-print{display:none!important}
+  .app{display:block}
+  main{padding:0}
+  .card{border-color:#ccc}
+  .kpi,.fila,.metr,tr,li{break-inside:avoid}   /* las tarjetas altas pueden partirse; sus filas no */
+  .solo-print{display:block}
+  .portada{border-bottom:2px solid #1f4e9c;padding-bottom:10px;margin-bottom:16px}
+  a{color:#000;text-decoration:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="side" aria-label="Secciones">
+    <p class="marca">BToLabs <small>Panel de trabajo · Grupo VL</small></p>
+    <ul class="menu" id="menu"></ul>
+    <p class="pie" id="pie"></p>
+  </nav>
+  <main id="main" tabindex="-1"><p class="estado">Cargando datos…</p></main>
+</div>
+<script>
+(function () {
+  'use strict';
+  var DATOS_REMOTOS = 'https://ttolabs.github.io/btolabs-panel/datos.json';
+  var WEB = 'https://ttolabs.github.io/btolabs-panel/';
+  var esApp = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+
+  // localStorage puede lanzar SecurityError en algunos WebView: siempre envuelto
+  function leerLocal(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+  function guardarLocal(k, v) { try { window.localStorage.setItem(k, v); } catch (e) { /* sin caché */ } }
+
+  var SECCIONES = [
+    { id: 'inicio', nombre: 'Inicio' },
+    { id: 'webs', nombre: 'Webs' },
+    { id: 'linkedin', nombre: 'LinkedIn' },
+    { id: 'accesos', nombre: 'Accesos' },
+    { id: 'confirmar', nombre: 'Por confirmar' },
+    { id: 'informes', nombre: 'Informes' }
+  ];
+  var D = null, actual = 'inicio';
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function clase(n) { return n == null ? '' : n >= 90 ? 'bien' : n >= 50 ? 'medio' : 'mal'; }
+  function color(n) { return n >= 90 ? 'var(--ok)' : n >= 50 ? 'var(--mid)' : 'var(--bad)'; }
+  function notaWeb(s) {
+    var m = s.lighthouse && s.lighthouse.celular; if (!m) return null;
+    return Math.round((m.rendimiento + m.seo + m.accesibilidad + m.buenas_practicas) / 4);
+  }
+  function fmtFecha(f) { if (!f) return '—'; var p = f.split('-'); return p.length === 3 ? p[2] + '-' + p[1] + '-' + p[0] : f; }
+  function v(x) { return x == null || x === '' ? '<span class="pend">Pendiente</span>' : esc(x); }
+
+  /* ---------- Carga de datos: remoto → caché → incluido en la app ---------- */
+  function cargar() {
+    var url = (esApp ? DATOS_REMOTOS : 'datos.json') + '?t=' + Date.now();
+    return fetch(url, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (j) { guardarLocal('panel-datos', JSON.stringify(j)); return j; })
+      .catch(function () {
+        var c = leerLocal('panel-datos');
+        if (c) { try { return JSON.parse(c); } catch (e) {} }
+        return fetch('datos.json').then(function (r) { return r.json(); });   // copia incluida en la APK
+      });
+  }
+
+  /* ---------- Vistas ---------- */
+  function cabecera(titulo, sub, conDescarga) {
+    return '<div class="solo-print portada"><b>BToLabs · Informe para Grupo VL</b><br>' + esc(titulo) + ' · datos al ' + fmtFecha(D.actualizado) + '</div>' +
+      '<div class="top"><div><h1>' + esc(titulo) + '</h1><p class="sub">' + sub + '</p></div>' +
+      (conDescarga ? '<div class="acciones"><button class="btn" data-accion="pdf">Descargar PDF</button><button class="btn" data-accion="csv">Descargar CSV</button></div>' : '') + '</div>';
+  }
+
+  function vInicio() {
+    var notas = D.sitios.map(notaWeb).filter(function (n) { return n != null; });
+    var prom = notas.length ? Math.round(notas.reduce(function (a, b) { return a + b; }, 0) / notas.length) : null;
+    var rend = D.sitios.map(function (s) { return s.lighthouse && s.lighthouse.celular ? s.lighthouse.celular.rendimiento : null; }).filter(function (n) { return n != null; });
+    var sinH1 = D.sitios.filter(function (s) { return s.seo && s.seo.h1 === 0; }).length;
+    var concedidos = D.accesos.filter(function (a) { return a.estado === 'Concedido'; }).length;
+    var h = cabecera('Diagnóstico de hoy', 'Línea base (mes cero) de las webs y redes del grupo, medida antes de empezar. Datos al ' + fmtFecha(D.actualizado) + '.', true);
+    h += '<div class="grid g4">' +
+      '<div class="card kpi"><b class="' + clase(prom) + '" style="background:none">' + (prom == null ? '—' : prom) + '<small style="font-size:16px">/100</small></b><span>Nota promedio de las webs (celular)</span></div>' +
+      '<div class="card kpi"><b>' + (rend.length ? Math.min.apply(null, rend) + '–' + Math.max.apply(null, rend) : '—') + '</b><span>Rendimiento en celular (de 100)</span></div>' +
+      '<div class="card kpi"><b>' + sinH1 + ' de ' + D.sitios.length + '</b><span>Portadas sin título principal (H1)</span></div>' +
+      '<div class="card kpi"><b>' + concedidos + ' de ' + D.accesos.length + '</b><span>Accesos concedidos</span></div></div>';
+    h += '<div class="grid g2" style="margin-top:16px"><div class="card"><h2>Nota por web</h2>' + D.sitios.map(function (s) {
+      var n = notaWeb(s);
+      return '<div class="fila" style="margin-bottom:12px"><span class="nota ' + clase(n) + '">' + (n == null ? '—' : n) + '</span><div style="min-width:0;flex:1"><b>' + esc(s.nombre) + '</b> <span class="sub" style="margin:0">' + esc(s.url) + '</span><div class="barra"><i style="width:' + (n || 0) + '%;background:' + color(n || 0) + '"></i></div></div></div>';
+    }).join('') + '<p class="sub">Promedio de rendimiento, SEO, accesibilidad y buenas prácticas de Lighthouse en celular.</p></div>';
+    h += '<div class="card"><h2>Falencias principales</h2><ul class="lista">' + D.falencias.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul></div></div>';
+    h += '<div class="card" style="margin-top:16px"><h2>Lo que mediremos con acceso</h2><div class="tabla"><table><thead><tr><th>Indicador</th><th>Fuente</th><th>Hoy</th></tr></thead><tbody>' +
+      D.requiere_acceso.map(function (r) { return '<tr><td>' + esc(r.indicador) + '</td><td>' + esc(r.fuente) + '</td><td class="pend">Requiere acceso</td></tr>'; }).join('') + '</tbody></table></div></div>';
+    return h;
+  }
+
+  function vWebs() {
+    var h = cabecera('Webs', 'Velocidad y calidad (Lighthouse), SEO básico y contenido desactualizado de cada sitio.', true);
+    h += '<p class="aviso">Lighthouse mide en laboratorio, simulando un celular con red lenta. Sirve para comparar entre webs y contra el mes siguiente; el valor exacto varía algo entre corridas.</p>';
+    h += '<div class="grid g2">' + D.sitios.map(function (s) {
+      var n = notaWeb(s), L = s.lighthouse || {}, c = '';
+      ['celular', 'escritorio'].forEach(function (modo) {
+        var m = L[modo];
+        c += '<h3>' + (modo === 'celular' ? 'Celular' : 'Escritorio') + '</h3>';
+        if (!m) { c += '<p class="vacio">Sin medición.</p>'; return; }
+        c += '<dl class="metr">' + [['Rendimiento', m.rendimiento], ['SEO', m.seo], ['Accesibilidad', m.accesibilidad], ['Buenas prácticas', m.buenas_practicas]].map(function (x) {
+          return '<dt>' + x[0] + '</dt><dd><span class="chip ' + clase(x[1]) + '">' + x[1] + '</span></dd>';
+        }).join('') + '<dt>Carga del elemento principal</dt><dd>' + m.lcp_s + ' s</dd><dt>Peso de la página</dt><dd>' + m.peso_mb + ' MB</dd></dl>';
+      });
+      var seo = s.seo || {};
+      c += '<h3>SEO y contenido</h3><dl class="metr">' +
+        '<dt>Título principal (H1)</dt><dd>' + (seo.h1 ? 'Sí' : '<span class="chip mal">No tiene</span>') + '</dd>' +
+        '<dt>Descripción para Google</dt><dd>' + (seo.meta_description ? 'Sí' : '<span class="chip mal">No tiene</span>') + '</dd>' +
+        '<dt>Imágenes sin texto alternativo</dt><dd>' + v(seo.imgs_sin_alt) + ' de ' + v(seo.imgs) + '</dd>' +
+        '<dt>Última noticia publicada</dt><dd>' + (s.contenido && s.contenido.ultima_entrada ? fmtFecha(s.contenido.ultima_entrada) : '<span class="chip mal">Ninguna</span>') + '</dd></dl>';
+      if (s.hallazgos && s.hallazgos.length) c += '<h3>Hallazgos</h3><ul class="lista">' + s.hallazgos.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+      return '<div class="card"><div class="fila"><span class="nota ' + clase(n) + '">' + (n == null ? '—' : n) + '</span><div><h2 style="margin:0">' + esc(s.nombre) + '</h2><a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.url) + '</a></div></div>' + c + '</div>';
+    }).join('') + '</div>';
+    return h;
+  }
+
+  function vLinkedin() {
+    var h = cabecera('LinkedIn', 'Datos públicos de cada página. Los cuenta Alberto con su sesión; las estadísticas internas requieren rol de administrador.', true);
+    h += '<div class="card tabla"><table><thead><tr><th>Página</th><th>Seguidores</th><th>Empleados en LinkedIn</th><th>Última publicación</th><th>Publicaciones (3 meses)</th><th>Interacción (últimas 5)</th></tr></thead><tbody>' +
+      D.linkedin.map(function (l) {
+        return '<tr><td><a href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.pagina) + '</a></td><td>' + v(l.seguidores) + '</td><td>' + v(l.empleados) + '</td><td>' + (l.ultima_publicacion ? fmtFecha(l.ultima_publicacion) : v(null)) + '</td><td>' + v(l.publicaciones_3m) + '</td><td>' + v(l.interaccion_ultimas5) + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+    h += '<div class="card" style="margin-top:16px"><h2>Cómo contarlo</h2><ol class="lista">' + D.guia_linkedin.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ol></div>';
+    return h;
+  }
+
+  function vAccesos() {
+    var h = cabecera('Accesos', 'Estado de cada acceso. Nunca se guardan contraseñas: Grupo VL agrega la cuenta de Alberto con el rol indicado.', true);
+    h += '<div class="card tabla"><table><thead><tr><th>Plataforma</th><th>Empresa</th><th>Estado</th><th>Rol pedido</th><th>Cuenta usada</th><th>Notas</th></tr></thead><tbody>' +
+      D.accesos.map(function (a) {
+        var cl = a.estado === 'Concedido' ? 'bien' : a.estado === 'Pedido' ? 'medio' : 'mal';
+        return '<tr><td><b>' + esc(a.plataforma) + '</b></td><td>' + esc(a.empresa) + '</td><td><span class="chip ' + cl + '">' + esc(a.estado) + '</span></td><td>' + esc(a.rol) + '</td><td>' + v(a.cuenta) + '</td><td>' + esc(a.notas || '') + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+    return h;
+  }
+
+  function vConfirmar() {
+    var h = cabecera('Por confirmar en la reunión', 'Datos que Grupo VL debe confirmar antes de publicar nada.', true);
+    h += '<div class="grid g2">' + D.confirmar.map(function (g) {
+      return '<div class="card"><h2>' + esc(g.grupo) + '</h2><ol class="lista">' + g.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol></div>';
+    }).join('') + '</div>';
+    return h;
+  }
+
+  function vInformes() {
+    var h = cabecera('Informes', 'Descarga cada sección en PDF (vista de impresión, hoja carta) o sus datos en CSV para Excel.', false);
+    h += '<div class="grid g2">' + SECCIONES.filter(function (s) { return s.id !== 'informes'; }).map(function (s) {
+      return '<div class="card"><h2>' + esc(s.nombre) + '</h2><div class="acciones"><button class="btn pri" data-accion="pdf" data-seccion="' + s.id + '">PDF</button><button class="btn" data-accion="csv" data-seccion="' + s.id + '">CSV</button></div></div>';
+    }).join('') + '</div>';
+    if (esApp) h += '<p class="sub" style="margin-top:16px">En la app, las descargas abren la versión web en el navegador del teléfono.</p>';
+    return h;
+  }
+
+  var VISTAS = { inicio: vInicio, webs: vWebs, linkedin: vLinkedin, accesos: vAccesos, confirmar: vConfirmar, informes: vInformes };
+
+  /* ---------- CSV por sección ---------- */
+  function filasCSV(id) {
+    if (id === 'inicio' || id === 'webs') return [['Web', 'URL', 'Nota', 'Rend. celular', 'SEO celular', 'Accesib. celular', 'Buenas prácticas celular', 'Rend. escritorio', 'H1', 'Descripción Google', 'Última noticia']].concat(D.sitios.map(function (s) {
+      var c = (s.lighthouse || {}).celular || {}, e = (s.lighthouse || {}).escritorio || {};
+      return [s.nombre, s.url, notaWeb(s), c.rendimiento, c.seo, c.accesibilidad, c.buenas_practicas, e.rendimiento, (s.seo || {}).h1 ? 'Sí' : 'No', (s.seo || {}).meta_description ? 'Sí' : 'No', (s.contenido || {}).ultima_entrada || 'Ninguna'];
+    }));
+    if (id === 'linkedin') return [['Página', 'URL', 'Seguidores', 'Empleados', 'Última publicación', 'Publicaciones 3 meses', 'Interacción últimas 5']].concat(D.linkedin.map(function (l) { return [l.pagina, l.url, l.seguidores, l.empleados, l.ultima_publicacion, l.publicaciones_3m, l.interaccion_ultimas5]; }));
+    if (id === 'accesos') return [['Plataforma', 'Empresa', 'Estado', 'Rol', 'Cuenta', 'Notas']].concat(D.accesos.map(function (a) { return [a.plataforma, a.empresa, a.estado, a.rol, a.cuenta, a.notas]; }));
+    if (id === 'confirmar') { var f = [['Grupo', 'Dato a confirmar']]; D.confirmar.forEach(function (g) { g.items.forEach(function (x) { f.push([g.grupo, x]); }); }); return f; }
+    return [];
+  }
+  function descargarCSV(id) {
+    var txt = filasCSV(id).map(function (f) { return f.map(function (c) { c = c == null ? '' : String(c); return /[";\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c; }).join(';'); }).join('\r\n');
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + txt], { type: 'text/csv;charset=utf-8' }));   // BOM: Excel lee bien las tildes
+    a.download = 'grupovl-' + id + '-' + D.actualizado + '.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  function accion(tipo, id) {
+    id = id || actual;
+    if (esApp) { window.open(WEB + '?s=' + id + '&' + tipo + '=1', '_system'); return; }   // la WebView no imprime ni descarga
+    if (tipo === 'csv') { descargarCSV(id); return; }
+    if (id !== actual) mostrar(id);
+    setTimeout(function () { window.print(); }, 50);
+  }
+
+  /* ---------- Navegación ---------- */
+  function mostrar(id) {
+    if (!VISTAS[id]) id = 'inicio';
+    actual = id;
+    document.getElementById('main').innerHTML = VISTAS[id]();
+    [].forEach.call(document.querySelectorAll('#menu button'), function (b) { b.setAttribute('aria-current', b.dataset.s === id ? 'page' : 'false'); });
+    document.title = SECCIONES.filter(function (s) { return s.id === id; })[0].nombre + ' · Panel BToLabs';
+    try { history.replaceState(null, '', '?s=' + id); } catch (e) {}
+  }
+
+  document.getElementById('menu').innerHTML = SECCIONES.map(function (s) { return '<li><button type="button" data-s="' + s.id + '">' + s.nombre + '</button></li>'; }).join('');
+  document.getElementById('menu').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    mostrar(b.dataset.s); document.getElementById('main').focus({ preventScroll: true }); window.scrollTo(0, 0);
+    if (b.scrollIntoView) b.scrollIntoView({ block: 'nearest', inline: 'center' });
+  });
+  document.getElementById('main').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-accion]'); if (b) accion(b.dataset.accion, b.dataset.seccion);
+  });
+
+  async function pedirPermisoNotificaciones() {
+    if (!esApp) return;
+    try {
+      var LN = window.Capacitor.Plugins.LocalNotifications; if (!LN) return;
+      var est = await LN.checkPermissions();
+      if (est.display !== 'granted') await LN.requestPermissions();
+    } catch (e) { /* no bloquea el arranque */ }
+  }
+
+  cargar().then(function (j) {
+    D = j;
+    document.getElementById('pie').textContent = 'Datos al ' + fmtFecha(D.actualizado);
+    var q = new URLSearchParams(location.search);
+    mostrar(q.get('s') || 'inicio');
+    if (q.get('pdf')) setTimeout(function () { window.print(); }, 400);
+    if (q.get('csv')) descargarCSV(actual);
+    setTimeout(pedirPermisoNotificaciones, 1500);
+  }).catch(function () {
+    document.getElementById('main').innerHTML = '<p class="estado">No se pudieron cargar los datos. Revisa la conexión e intenta de nuevo.</p>';
+  });
+})();
+</script>
+</body>
+</html>

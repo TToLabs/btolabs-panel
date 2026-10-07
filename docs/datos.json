@@ -1,0 +1,360 @@
+{
+ "actualizado": "2026-10-07",
+ "fuente": "Lighthouse 12 (laboratorio, simulación de celular con red lenta) corrido el 7-oct-2026; revisión de las portadas públicas; rastreo de 103 páginas (6-oct-2026).",
+ "sitios": [
+  {
+   "id": "grupovl",
+   "nombre": "Grupo VL",
+   "url": "https://grupovl.cl/",
+   "lighthouse": {
+    "celular": {
+     "rendimiento": 27,
+     "seo": 92,
+     "accesibilidad": 91,
+     "buenas_practicas": 96,
+     "lcp_s": 41.6,
+     "cls": 0.001,
+     "tbt_ms": 22904,
+     "peso_mb": 38.1
+    },
+    "escritorio": {
+     "rendimiento": 28,
+     "seo": 92,
+     "accesibilidad": 91,
+     "buenas_practicas": 100,
+     "lcp_s": 10.6,
+     "cls": 0.035,
+     "tbt_ms": 6020,
+     "peso_mb": 16.8
+    }
+   },
+   "seo": {
+    "h1": 0,
+    "meta_description": "Somos una sólida empresa de servicios con Certificación Integrada, cerca de 1.500 empleados, más de 70 clientes y presencia en 9 regiones del país.",
+    "imgs": 44,
+    "imgs_sin_alt": 6,
+    "https": true,
+    "sitemap": true
+   },
+   "contenido": {
+    "ultima_entrada": null
+   },
+   "hallazgos": [
+    "En celular la página pesa 38 MB y su elemento principal tarda entre 42 y 116 s en aparecer (2 mediciones).",
+    "La portada no tiene título principal (H1).",
+    "La descripción para Google dice cerca de 1.500 empleados, más de 70 clientes y 9 regiones; el texto de la web dice cerca de 1.000, más de 60 y 8.",
+    "La única entrada del blog es la de ejemplo de WordPress (\"Hello world!\", 2021).",
+    "Contadores de la portada en cero.",
+    "No nombra ni enlaza a las empresas del grupo.",
+    "Sin imagen para compartir en redes (og:image)."
+   ]
+  },
+  {
+   "id": "suat",
+   "nombre": "SUAT",
+   "url": "https://suat.cl/",
+   "lighthouse": {
+    "celular": {
+     "rendimiento": 33,
+     "seo": 58,
+     "accesibilidad": 95,
+     "buenas_practicas": 79,
+     "lcp_s": 12.3,
+     "cls": 0.018,
+     "tbt_ms": 8435,
+     "peso_mb": 6.7
+    },
+    "escritorio": {
+     "rendimiento": 27,
+     "seo": 50,
+     "accesibilidad": 91,
+     "buenas_practicas": 78,
+     "lcp_s": 5.5,
+     "cls": 0.053,
+     "tbt_ms": 2534,
+     "peso_mb": 6.9
+    }
+   },
+   "seo": {
+    "h1": 0,
+    "meta_description": "",
+    "imgs": 17,
+    "imgs_sin_alt": 7,
+    "https": true,
+    "sitemap": true
+   },
+   "contenido": {
+    "ultima_entrada": "2025-05-19"
+   },
+   "hallazgos": [
+    "La portada no tiene título principal (H1).",
+    "No tiene descripción para Google: SEO 58/100 en celular.",
+    "Texto de relleno \"Lorem ipsum\" visible.",
+    "El enlace a la Política de Gestión apunta a un sitio de pruebas (suat.maqueta.com.es)."
+   ]
+  },
+  {
+   "id": "tresur",
+   "nombre": "Tresur",
+   "url": "https://tresur.cl/",
+   "lighthouse": {
+    "celular": {
+     "rendimiento": 30,
+     "seo": 92,
+     "accesibilidad": 92,
+     "buenas_practicas": 71,
+     "lcp_s": 10.7,
+     "cls": 0.023,
+     "tbt_ms": 23117,
+     "peso_mb": 8.6
+    },
+    "escritorio": {
+     "rendimiento": 59,
+     "seo": 100,
+     "accesibilidad": 92,
+     "buenas_practicas": 74,
+     "lcp_s": 1.1,
+     "cls": 0.016,
+     "tbt_ms": 1113,
+     "peso_mb": 8.6
+    }
+   },
+   "seo": {
+    "h1": 0,
+    "meta_description": "BIENVENIDOS A TresUR. Somos una sólida y destacada empresa con una alta experiencia en el ámbito de los servicios de recolección de residuos solidos",
+    "imgs": 21,
+    "imgs_sin_alt": 7,
+    "https": true,
+    "sitemap": true
+   },
+   "contenido": {
+    "ultima_entrada": "2025-12-19"
+   },
+   "hallazgos": [
+    "La portada no tiene título principal (H1).",
+    "El enlace a LinkedIn lleva a la vista de administrador (/admin/).",
+    "Menú duplicado.",
+    "Los 7 \"Ver servicio\" llevan a la misma página."
+   ]
+  },
+  {
+   "id": "maquinfra",
+   "nombre": "Maquinfra",
+   "url": "https://maquinfra.cl/",
+   "lighthouse": {
+    "celular": {
+     "rendimiento": 28,
+     "seo": 100,
+     "accesibilidad": 96,
+     "buenas_practicas": 57,
+     "lcp_s": 11.9,
+     "cls": 0,
+     "tbt_ms": 11979,
+     "peso_mb": 4.2
+    },
+    "escritorio": {
+     "rendimiento": 35,
+     "seo": 100,
+     "accesibilidad": 92,
+     "buenas_practicas": 74,
+     "lcp_s": 4.6,
+     "cls": 0.001,
+     "tbt_ms": 1670,
+     "peso_mb": 4.0
+    }
+   },
+   "seo": {
+    "h1": 0,
+    "meta_description": "Expertos en diseñar, proyectar, suministrar, fabricar e instalar distintos tipos de estructuras y elementos de construcción. Estamos en San Bernardo.",
+    "imgs": 25,
+    "imgs_sin_alt": 5,
+    "https": true,
+    "sitemap": true
+   },
+   "contenido": {
+    "ultima_entrada": null
+   },
+   "hallazgos": [
+    "La portada no tiene título principal (H1).",
+    "Pie con © 2021.",
+    "Sin sección de noticias.",
+    "Formulario de empleo sin vacantes publicadas."
+   ]
+  }
+ ],
+ "falencias": [
+  "Las 4 webs son lentas en celular: rendimiento entre 27 y 33 de 100.",
+  "Ninguna portada tiene título principal (H1), básico para aparecer en Google.",
+  "Cifras distintas entre la web, Google y LinkedIn (empleados, clientes, regiones).",
+  "Contenido desactualizado: blog de ejemplo en Grupo VL, © 2021 en Maquinfra, \"Lorem ipsum\" en SUAT.",
+  "LinkedIn del grupo con unos 618 seguidores para más de 1.000 trabajadores (5-oct-2026).",
+  "Certificaciones ISO sin alcance ni vigencia visibles."
+ ],
+ "requiere_acceso": [
+  {
+   "indicador": "Visitas a cada web y de dónde llegan",
+   "fuente": "Google Analytics 4"
+  },
+  {
+   "indicador": "Búsquedas en Google, clics y posición",
+   "fuente": "Google Search Console"
+  },
+  {
+   "indicador": "Formularios de cotización recibidos",
+   "fuente": "Correo o WordPress de cada web"
+  },
+  {
+   "indicador": "Postulaciones de empleo por canal",
+   "fuente": "WordPress, Trabajando.cl y Facebook"
+  },
+  {
+   "indicador": "Impresiones, visitantes y perfil de seguidores en LinkedIn",
+   "fuente": "LinkedIn (rol de administrador)"
+  }
+ ],
+ "linkedin": [
+  {
+   "pagina": "Grupo VL",
+   "url": "https://www.linkedin.com/company/grupo-vl/",
+   "seguidores": "≈618 (5-oct)",
+   "empleados": null,
+   "ultima_publicacion": null,
+   "publicaciones_3m": null,
+   "interaccion_ultimas5": null
+  },
+  {
+   "pagina": "SUAT",
+   "url": "https://www.linkedin.com/company/15157889/",
+   "seguidores": null,
+   "empleados": null,
+   "ultima_publicacion": null,
+   "publicaciones_3m": null,
+   "interaccion_ultimas5": null
+  },
+  {
+   "pagina": "Tresur",
+   "url": "https://www.linkedin.com/company/15154781/",
+   "seguidores": null,
+   "empleados": null,
+   "ultima_publicacion": null,
+   "publicaciones_3m": null,
+   "interaccion_ultimas5": null
+  },
+  {
+   "pagina": "Maquinfra",
+   "url": "https://www.linkedin.com/company/maquinfra/",
+   "seguidores": null,
+   "empleados": null,
+   "ultima_publicacion": null,
+   "publicaciones_3m": null,
+   "interaccion_ultimas5": null
+  }
+ ],
+ "guia_linkedin": [
+  "Entra a LinkedIn con tu cuenta y abre la página de la empresa (enlaces de la tabla).",
+  "Anota los seguidores, bajo el nombre de la empresa.",
+  "Anota \"Ver los N empleados\": son las personas que dicen trabajar ahí.",
+  "En la pestaña Publicaciones, anota la fecha de la última y cuenta las de los últimos 3 meses.",
+  "Suma las reacciones y comentarios de las últimas 5 publicaciones.",
+  "Mándame los números y los publico en el panel."
+ ],
+ "accesos": [
+  {
+   "plataforma": "LinkedIn",
+   "empresa": "Grupo VL, SUAT, Tresur, Maquinfra",
+   "estado": "Pendiente",
+   "rol": "Analista o Administrador de contenido",
+   "cuenta": null,
+   "notas": "Te agregan en Herramientas de administración → Administrar administradores."
+  },
+  {
+   "plataforma": "Google Analytics 4",
+   "empresa": "Las 4 webs",
+   "estado": "Pendiente",
+   "rol": "Lector",
+   "cuenta": null,
+   "notas": "Confirmar primero si tienen Analytics instalado."
+  },
+  {
+   "plataforma": "Google Search Console",
+   "empresa": "Las 4 webs",
+   "estado": "Pendiente",
+   "rol": "Usuario (completo o restringido)",
+   "cuenta": null,
+   "notas": ""
+  },
+  {
+   "plataforma": "WordPress",
+   "empresa": "Las 4 webs",
+   "estado": "Pendiente",
+   "rol": "Editor",
+   "cuenta": null,
+   "notas": "Usuario propio, nunca la cuenta de otra persona."
+  },
+  {
+   "plataforma": "Facebook de reclutamiento",
+   "empresa": "Grupo VL",
+   "estado": "Pendiente",
+   "rol": "Editor de la página",
+   "cuenta": null,
+   "notas": ""
+  },
+  {
+   "plataforma": "Trabajando.cl",
+   "empresa": "Grupo VL",
+   "estado": "Pendiente",
+   "rol": "Usuario de la empresa",
+   "cuenta": null,
+   "notas": ""
+  },
+  {
+   "plataforma": "Hosting y dominios (v2networks)",
+   "empresa": "Grupo VL",
+   "estado": "Pendiente",
+   "rol": "Solo información: qué cubre y cuándo vence",
+   "cuenta": null,
+   "notas": ""
+  }
+ ],
+ "confirmar": [
+  {
+   "grupo": "Cifras y certificaciones",
+   "items": [
+    "Vigencia, alcance y certificadora de las ISO 9001, 14001 y 45001 (pedir certificado).",
+    "Trabajadores: web cerca de 1.000, Google 1.500, LinkedIn 1.500.",
+    "Clientes: web más de 60, Google más de 70.",
+    "Regiones con presencia: web 8, Google y LinkedIn 9. ¿Cuáles?",
+    "Año de fundación: web 2010, LinkedIn 2014.",
+    "SUAT: origen de los \"20 años\".",
+    "Maquinfra: toneladas por proyecto; Línea 7 contratada o ejecutada; cliente de Américo Vespucio Oriente."
+   ]
+  },
+  {
+   "grupo": "Contacto",
+   "items": [
+    "Horario de atención real.",
+    "Teléfonos: ¿2 2363 5000 común? ¿Tresur tiene propio? ¿(+56) 9 5400 5779 de Maquinfra es comercial?",
+    "Correos comerciales por empresa.",
+    "Dirección: Arturo Prat 1370 o 1350."
+   ]
+  },
+  {
+   "grupo": "Clientes y contratos",
+   "items": [
+    "Qué clientes autorizan mostrar nombre y logo; actuales o históricos.",
+    "Nogales: ¿Municipalidad de Nogales (V) o Quebrada de Nogales (Machalí)?",
+    "¿Se pueden publicar las adjudicaciones con municipio, fecha y plazo?"
+   ]
+  },
+  {
+   "grupo": "Contenido y accesos",
+   "items": [
+    "Visión \"al 2025\": ya venció, ¿cuál es la nueva?",
+    "¿Maquinfra tiene misión propia? (publica la del grupo).",
+    "Muro SGI: ¿se pueden enlazar los 9 documentos y cuáles son las versiones vigentes?",
+    "Maxilimpio y Captotal/Ceducap: datos reales.",
+    "¿Tienen Google Analytics y Search Console instalados? ¿Quién los administra?"
+   ]
+  }
+ ]
+}
