@@ -13,44 +13,46 @@
   - Descargas: PDF con la vista de impresión del navegador y CSV. En la APK abren la versión web en el navegador del teléfono.
 -->
 <style>
-:root{--bg:#f4f6fa;--card:#fff;--ink:#0f172a;--muted:#5b6678;--line:#e2e8f0;--acc:#1f4e9c;--acc2:#e8effa;
-  --ok:#15803d;--okb:#e7f6ec;--mid:#a16207;--midb:#fef6dc;--bad:#b42318;--badb:#fdecea;--side:#0b1b3a;--sidet:#c9d4e8}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--card:#121b2d;--ink:#e8edf5;--muted:#9aa7bb;--line:#1f2b40;--acc:#7aa7ef;--acc2:#16233d;
-  --ok:#4ade80;--okb:#0f2a1a;--mid:#facc15;--midb:#2a2410;--bad:#f87171;--badb:#2d1414;--side:#060d1b;--sidet:#9fb0cc}}
+:root{color-scheme:light;--bg:#ffffff;--card:#ffffff;--ink:#14213d;--muted:#5f6b7a;--line:#dfe3e8;--acc:#1b3a6b;--acc2:#eef2f7;
+  --ok:#2f6f4f;--okb:#edf5f0;--mid:#8a6a1f;--midb:#f8f3e6;--bad:#9b2c2c;--badb:#f8eded;--side:#f7f8fa;--sidet:#3b4757}
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 "Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--acc)}
 .app{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh}
-.side{background:var(--side);color:var(--sidet);padding:24px 14px;position:sticky;top:0;height:100vh;overflow:auto}
-.marca{font-weight:800;font-size:18px;color:#fff;margin:0 10px 4px}
-.marca small{display:block;font-weight:500;font-size:12px;color:var(--sidet);opacity:.8}
-.menu{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:2px}
-.menu button{all:unset;box-sizing:border-box;width:100%;display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px}
-.menu button:hover{background:rgba(255,255,255,.07);color:#fff}
-.menu button[aria-current="page"]{background:#1f4e9c;color:#fff}
-.menu button:focus-visible{outline:2px solid #7aa7ef;outline-offset:2px}
-.side .pie{margin:24px 10px 0;font-size:12px;opacity:.8}
+.side{background:var(--side);color:var(--sidet);border-right:1px solid var(--line);padding:24px 14px;position:sticky;top:0;height:100vh;overflow:auto}
+.marca{display:flex;gap:10px;align-items:center;font-weight:700;font-size:16px;color:var(--ink);margin:0 10px 4px;line-height:1.25}
+.marca img{width:44px;height:auto;flex:none}
+.marca small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+.grupo-menu{margin:18px 12px 6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.menu{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:2px}
+.menu button{all:unset;box-sizing:border-box;width:100%;display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:4px;border-left:3px solid transparent;cursor:pointer;font-weight:600;font-size:14px}
+.menu button:hover{background:var(--acc2);color:var(--ink)}
+.menu button[aria-current="page"]{background:var(--acc2);color:var(--acc);border-left-color:var(--acc)}
+.menu button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.side .pie{margin:24px 12px 0;font-size:12px;color:var(--muted)}
 main{padding:28px clamp(16px,3vw,40px) 48px;min-width:0}
 .top{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;margin-bottom:22px}
-h1{font-size:clamp(24px,3vw,32px);line-height:1.15;margin:0;letter-spacing:-.02em}
+h1{font-size:clamp(22px,2.6vw,28px);line-height:1.2;margin:0;font-weight:700;letter-spacing:-.01em;color:var(--acc)}
+.top{border-bottom:2px solid var(--acc);padding-bottom:14px}
 .sub{color:var(--muted);margin:6px 0 0;font-size:14px}
 .acciones{display:flex;gap:8px;flex-wrap:wrap}
-.btn{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.btn{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:4px;font-weight:600;font-size:14px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink)}
 .btn:hover{border-color:var(--acc)}
 .btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
 .btn:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 .grid{display:grid;gap:16px}
 .g4{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
 .g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;min-width:0}
-.card h2{font-size:17px;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:20px;min-width:0}
+.card h2{font-size:13px;margin:0 0 14px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
 .card h3{font-size:15px;margin:16px 0 8px}
-.kpi b{display:block;font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.kpi{border-top:3px solid var(--acc)}
+.kpi b{display:block;font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1.1;color:var(--ink)}
 .kpi span{color:var(--muted);font-size:13px}
-.nota{display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;font-weight:800;font-size:20px;flex:none}
+.nota{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:4px;font-weight:700;font-size:19px;flex:none;border:1px solid currentColor}
 .bien{color:var(--ok);background:var(--okb)}.medio{color:var(--mid);background:var(--midb)}.mal{color:var(--bad);background:var(--badb)}
-.chip{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700}
+.chip{display:inline-block;padding:1px 8px;border-radius:3px;font-size:12px;font-weight:700}
 .fila{display:flex;gap:14px;align-items:center}
 .barra{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:4px}
 .barra i{display:block;height:100%;border-radius:99px}
@@ -62,17 +64,19 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute
 .tabla{overflow-x:auto}
 ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
 .vacio{color:var(--muted);font-style:italic}
-.aviso{border-left:4px solid var(--mid);background:var(--midb);padding:12px 14px;border-radius:10px;font-size:14px;margin-bottom:16px}
+.aviso{border-left:3px solid var(--acc);background:var(--acc2);padding:12px 14px;border-radius:3px;font-size:14px;margin-bottom:16px}
 .pend{color:var(--muted);font-weight:600}
 .solo-print{display:none}
 .estado{padding:40px;text-align:center;color:var(--muted)}
 @media (max-width:860px){
   .app{grid-template-columns:1fr}
-  .side{position:sticky;top:0;z-index:5;height:auto;padding:12px 12px 8px;padding-top:max(12px,env(safe-area-inset-top))}
+  .side{position:sticky;top:0;z-index:5;height:auto;padding:12px 12px 8px;padding-top:max(12px,env(safe-area-inset-top));border-right:0;border-bottom:1px solid var(--line)}
+  .grupo-menu{display:none}
   .side .pie{display:none}
   .marca{font-size:16px;margin:0 4px}
   .menu{grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto;margin-top:10px;padding-bottom:4px;scrollbar-width:none}
-  .menu button{padding:8px 12px}
+  .menu button{padding:8px 12px;border-left:0;border-bottom:2px solid transparent;border-radius:0}
+  .menu button[aria-current="page"]{border-bottom-color:var(--acc)}
   main{padding-top:20px}
 }
 @media print{
@@ -92,7 +96,7 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
 <body>
 <div class="app">
   <nav class="side" aria-label="Secciones">
-    <p class="marca">BToLabs <small>Panel de trabajo · Grupo VL</small></p>
+    <p class="marca"><img src="img/logo-grupovl.png" alt="Grupo VL"><span>Grupo VL<small>Diagnóstico digital · preparado por BToLabs</small></span></p>
     <ul class="menu" id="menu"></ul>
     <p class="pie" id="pie"></p>
   </nav>
@@ -110,12 +114,12 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
   function guardarLocal(k, v) { try { window.localStorage.setItem(k, v); } catch (e) { /* sin caché */ } }
 
   var SECCIONES = [
-    { id: 'inicio', nombre: 'Inicio' },
-    { id: 'webs', nombre: 'Webs' },
-    { id: 'linkedin', nombre: 'LinkedIn' },
-    { id: 'accesos', nombre: 'Accesos' },
-    { id: 'confirmar', nombre: 'Por confirmar' },
-    { id: 'informes', nombre: 'Informes' }
+    { id: 'inicio', nombre: 'Resumen ejecutivo', grupo: 'Informe para gerencia' },
+    { id: 'webs', nombre: 'Webs', grupo: 'Informe para gerencia' },
+    { id: 'linkedin', nombre: 'LinkedIn', grupo: 'Informe para gerencia' },
+    { id: 'informes', nombre: 'Descargas', grupo: 'Informe para gerencia' },
+    { id: 'accesos', nombre: 'Accesos', grupo: 'Uso interno' },
+    { id: 'confirmar', nombre: 'Por confirmar', grupo: 'Uso interno' }
   ];
   var D = null, actual = 'inicio';
 
@@ -143,7 +147,7 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
 
   /* ---------- Vistas ---------- */
   function cabecera(titulo, sub, conDescarga) {
-    return '<div class="solo-print portada"><b>BToLabs · Informe para Grupo VL</b><br>' + esc(titulo) + ' · datos al ' + fmtFecha(D.actualizado) + '</div>' +
+    return '<div class="solo-print portada"><img src="img/logo-grupovl.png" alt="" style="height:40px;vertical-align:middle;margin-right:10px"><b>Grupo VL · Diagnóstico digital</b><br>' + esc(titulo) + ' · datos al ' + fmtFecha(D.actualizado) + ' · preparado por BToLabs</div>' +
       '<div class="top"><div><h1>' + esc(titulo) + '</h1><p class="sub">' + sub + '</p></div>' +
       (conDescarga ? '<div class="acciones"><button class="btn" data-accion="pdf">Descargar PDF</button><button class="btn" data-accion="csv">Descargar CSV</button></div>' : '') + '</div>';
   }
@@ -153,13 +157,12 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
     var prom = notas.length ? Math.round(notas.reduce(function (a, b) { return a + b; }, 0) / notas.length) : null;
     var rend = D.sitios.map(function (s) { return s.lighthouse && s.lighthouse.celular ? s.lighthouse.celular.rendimiento : null; }).filter(function (n) { return n != null; });
     var sinH1 = D.sitios.filter(function (s) { return s.seo && s.seo.h1 === 0; }).length;
-    var concedidos = D.accesos.filter(function (a) { return a.estado === 'Concedido'; }).length;
-    var h = cabecera('Diagnóstico de hoy', 'Línea base (mes cero) de las webs y redes del grupo, medida antes de empezar. Datos al ' + fmtFecha(D.actualizado) + '.', true);
+    var h = cabecera('Resumen ejecutivo', 'Línea base (mes cero) de las webs y redes del grupo, medida antes de empezar. Datos al ' + fmtFecha(D.actualizado) + '.', true);
     h += '<div class="grid g4">' +
-      '<div class="card kpi"><b class="' + clase(prom) + '" style="background:none">' + (prom == null ? '—' : prom) + '<small style="font-size:16px">/100</small></b><span>Nota promedio de las webs (celular)</span></div>' +
+      '<div class="card kpi"><b>' + (prom == null ? '—' : prom) + '<small style="font-size:15px;color:var(--muted)"> /100</small></b><span>Nota promedio de las webs (celular)</span></div>' +
       '<div class="card kpi"><b>' + (rend.length ? Math.min.apply(null, rend) + '–' + Math.max.apply(null, rend) : '—') + '</b><span>Rendimiento en celular (de 100)</span></div>' +
       '<div class="card kpi"><b>' + sinH1 + ' de ' + D.sitios.length + '</b><span>Portadas sin título principal (H1)</span></div>' +
-      '<div class="card kpi"><b>' + concedidos + ' de ' + D.accesos.length + '</b><span>Accesos concedidos</span></div></div>';
+      '<div class="card kpi"><b>' + esc((D.linkedin[0] || {}).seguidores || '—') + '</b><span>Seguidores del grupo en LinkedIn</span></div></div>';
     h += '<div class="grid g2" style="margin-top:16px"><div class="card"><h2>Nota por web</h2>' + D.sitios.map(function (s) {
       var n = notaWeb(s);
       return '<div class="fila" style="margin-bottom:12px"><span class="nota ' + clase(n) + '">' + (n == null ? '—' : n) + '</span><div style="min-width:0;flex:1"><b>' + esc(s.nombre) + '</b> <span class="sub" style="margin:0">' + esc(s.url) + '</span><div class="barra"><i style="width:' + (n || 0) + '%;background:' + color(n || 0) + '"></i></div></div></div>';
@@ -224,9 +227,9 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
   }
 
   function vInformes() {
-    var h = cabecera('Informes', 'Descarga cada sección en PDF (vista de impresión, hoja carta) o sus datos en CSV para Excel.', false);
+    var h = cabecera('Descargas', 'Cada sección en PDF (hoja carta) o sus datos en CSV para Excel. Las de uso interno no se entregan al cliente.', false);
     h += '<div class="grid g2">' + SECCIONES.filter(function (s) { return s.id !== 'informes'; }).map(function (s) {
-      return '<div class="card"><h2>' + esc(s.nombre) + '</h2><div class="acciones"><button class="btn pri" data-accion="pdf" data-seccion="' + s.id + '">PDF</button><button class="btn" data-accion="csv" data-seccion="' + s.id + '">CSV</button></div></div>';
+      return '<div class="card"><h2>' + esc(s.nombre) + ' · ' + esc(s.grupo) + '</h2><div class="acciones"><button class="btn pri" data-accion="pdf" data-seccion="' + s.id + '">PDF</button><button class="btn" data-accion="csv" data-seccion="' + s.id + '">CSV</button></div></div>';
     }).join('') + '</div>';
     if (esApp) h += '<p class="sub" style="margin-top:16px">En la app, las descargas abren la versión web en el navegador del teléfono.</p>';
     return h;
@@ -271,7 +274,11 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
     try { history.replaceState(null, '', '?s=' + id); } catch (e) {}
   }
 
-  document.getElementById('menu').innerHTML = SECCIONES.map(function (s) { return '<li><button type="button" data-s="' + s.id + '">' + s.nombre + '</button></li>'; }).join('');
+  // Menú agrupado: lo que se muestra a la gerencia, separado de lo de uso interno
+  document.getElementById('menu').innerHTML = SECCIONES.map(function (s, i) {
+    var titulo = (i === 0 || SECCIONES[i - 1].grupo !== s.grupo) ? '<li class="grupo-menu" aria-hidden="true">' + s.grupo + '</li>' : '';
+    return titulo + '<li><button type="button" data-s="' + s.id + '">' + s.nombre + '</button></li>';
+  }).join('');
   document.getElementById('menu').addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
     mostrar(b.dataset.s); document.getElementById('main').focus({ preventScroll: true }); window.scrollTo(0, 0);

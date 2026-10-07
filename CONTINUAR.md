@@ -21,11 +21,17 @@ Panel interno de trabajo de Alberto (BToLabs), **solo lectura**: diagnóstico de
 ## Estado (7-oct-2026)
 - Web probada en local (`python -m http.server 8766 --directory docs`): las 6 secciones sin errores de consola, sin desborde a 375 px, CSV correcto (separador `;`, BOM), PDF generado con Chrome headless, 3 páginas carta.
 - APK debug compilada: `android/app/build/outputs/apk/debug/app-debug.apk` (3,8 MB). Trae `assets/public/index.html` y `datos.json`, plugin de notificaciones y los permisos INTERNET y POST_NOTIFICATIONS. **No se probó en un teléfono ni en un emulador.**
-- Repo local con commits. **No publicado:** el sistema de permisos bloqueó crear el repo público `TToLabs/btolabs-panel` y activar Pages. Hasta que se publique, la APK usa los datos que trae adentro.
+- Publicado: ver "Cambios del 7-oct (tarde)".
+
+## Cambios del 7-oct (tarde)
+- **Publicado** con autorización de Alberto: repo público `TToLabs/btolabs-panel`, Pages desde `/docs` → https://ttolabs.github.io/btolabs-panel/ . APK descargable: `/panel-btolabs.apk`.
+- **Ícono** con el logo de Grupo VL (la web solo lo tiene en 106×91; recortado y al 80 % de la capa frontal). Fuentes en `assets/`; se regenera con `npx capacitor-assets generate --android --iconBackgroundColor "#ffffff"`.
+- **Estilo ejecutivo** (pedido de Alberto): siempre fondo blanco, sin modo oscuro, azul marino y grises. Menú en dos grupos: "Informe para gerencia" (Resumen ejecutivo, Webs, LinkedIn, Descargas) y "Uso interno" (Accesos, Por confirmar). El resumen ya no muestra el estado de los accesos.
+- APK instalada y probada en el teléfono de Alberto (Samsung A23, adb `R5CTC0T1W4W`): abre, lee los datos y no hay errores en logcat. Pages entrega `datos.json` con CORS `*`.
+- **No es el panel completo de Alberto** (checklist, guías y vista en vivo) **ni el informe semanal y mensual para la gerencia**: es el diagnóstico de mes cero. Esos dos siguen pendientes.
 
 ## Pendientes
-1. Que Alberto autorice publicar (repo público + Pages), o que defina otro hosting.
-2. Instalar la APK en el teléfono y comprobar que abre y lee los datos.
+1. Hacer el panel de trabajo de Alberto (checklist mensual, guías por ítem, vista en vivo) y el informe para gerencia (semanal y mensual).
 3. Cargar los números de LinkedIn cuando Alberto los cuente.
 4. Después de la reunión: actualizar accesos y datos confirmados.
 
