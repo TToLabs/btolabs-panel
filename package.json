@@ -4,7 +4,7 @@
   "private": true,
   "description": "Panel interno de trabajo de BToLabs (solo lectura): diagnóstico, accesos e informes de Grupo VL.",
   "scripts": {
-    "sync": "cap sync android",
+    "sync": "node scripts/preparar-www.js && cap sync android",
     "build:apk": "cd android && gradlew.bat assembleDebug"
   },
   "dependencies": {

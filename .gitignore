@@ -5,3 +5,4 @@ android/.gradle/
 android/local.properties
 *.apk
 !docs/panel-btolabs.apk
+www/

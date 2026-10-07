@@ -10,7 +10,7 @@ Panel interno de trabajo de Alberto (BToLabs), **solo lectura**: diagnóstico de
 ## Estructura
 - `docs/index.html`: toda la app (HTML, CSS y JS en un archivo, sin dependencias externas; funciona sin internet dentro de la APK).
 - `docs/datos.json`: **los datos**. Para actualizar el panel se edita este archivo y se publica: la web y la APK lo leen al abrir (la APK pide `https://ttolabs.github.io/btolabs-panel/datos.json`; sin red usa la última copia guardada o la que trae adentro).
-- `android/`: proyecto Capacitor 6 (`cl.btolabs.panel`, webDir `docs`). Pide permiso de notificaciones (regla general). `localStorage` envuelto en try/catch.
+- `android/`: proyecto Capacitor 6 (`cl.btolabs.panel`, webDir `www`, generado por `scripts/preparar-www.js`). Pide permiso de notificaciones (regla general). `localStorage` envuelto en try/catch.
 
 ## Decisiones de Alberto (no re-litigar)
 - Solo lectura: Alberto lee y descarga; Claude actualiza `datos.json`.
@@ -37,9 +37,10 @@ Panel interno de trabajo de Alberto (BToLabs), **solo lectura**: diagnóstico de
 
 ## Cómo actualizar datos
 Editar `docs/datos.json` → commit → push. La APK no se recompila.
-Recompilar la APK solo si cambia `index.html`: `npx cap sync android && cd android && gradlew.bat assembleDebug`.
+Recompilar la APK solo si cambia `index.html`: `npm run sync && cd android && gradlew.bat assembleDebug`. Después copiar la APK a `docs/panel-btolabs.apk` y hacer push.
 
 ## Trampas
+- **Capacitor empaqueta `www/`, no `docs/`.** `npm run sync` arma `www/` desde `docs/` sin los `.apk`. Si se empaqueta `docs/` directo, cada APK lleva adentro la anterior: pasó el 7-oct (21,4 MB en vez de 7,5 MB).
 - La API de PageSpeed sin clave tiene cuota 0 (error 429). Las mediciones se hicieron con Lighthouse local: `npx -y lighthouse@12 <url> [--preset=desktop]`.
 - La carga del elemento principal (LCP) de grupovl.cl en celular varió entre 41,6 y 115,8 s en 2 corridas; se publica la menor.
 - Chrome headless para PDF necesita `--user-data-dir` propio si el Chrome de Alberto está abierto.
