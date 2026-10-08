@@ -30,7 +30,15 @@ Panel interno de trabajo de Alberto (BToLabs), **solo lectura**: diagnóstico de
 - APK instalada y probada en el teléfono de Alberto (Samsung A23, adb `R5CTC0T1W4W`): abre, lee los datos y no hay errores en logcat. Pages entrega `datos.json` con CORS `*`.
 - **Decisión de Alberto (7-oct): este es SU panel.** Hoy contiene el diagnóstico de mes cero. Sobre esta misma base se agregan el checklist mensual, las guías por ítem, la vista en vivo (solo para él) y el informe semanal y mensual para la gerencia.
 
+## Cambios del 8-oct
+- **Sección nueva "Plan de mejora"** (en "Informe para gerencia"): hallazgos verificados con sus causas, orden recomendado (Primero / Después / Tras la reunión / Según el contrato), tabla de problemas y soluciones, y los **costos para Grupo VL** (honorarios y herramientas de terceros). Datos en `docs/datos.json` clave `plan` (incluye `plan.costos`).
+- **Decisión de Alberto (8-oct):** las mejoras de "Primero" y "Después" van incluidas en el plan mensual; no se cobran aparte ni por horas. El valor de $90.000 por sitio sigue sin confirmar.
+- Precios de terceros consultados el 8-oct-2026: WP Rocket (wp-rocket.me) verificado; ShortPixel solo por sitios de comparación (no se pudo leer su página oficial); Smush Pro sin precio.
+- Paseo guiado con voz y subtítulos: scripts en la carpeta temporal del equipo (no están en el repo). Ver `Grupo VL/boveda/Plan técnico y costos.md` para el detalle.
+- **La APK instalada en el teléfono es la anterior**: no muestra "Plan de mejora" hasta reinstalar la nueva (`docs/panel-btolabs.apk`). El teléfono no estaba conectado por adb.
+
 ## Pendientes
+0. Reinstalar la APK en el teléfono (bajarla de la web o por adb).
 1. Agregar al panel: checklist mensual, guías por ítem, vista en vivo (solo Alberto) e informe semanal y mensual para la gerencia.
 2. Cargar los números de LinkedIn cuando Alberto los cuente.
 3. Después de la reunión: actualizar accesos y datos confirmados.

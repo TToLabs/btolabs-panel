@@ -356,5 +356,167 @@
     "¿Tienen Google Analytics y Search Console instalados? ¿Quién los administra?"
    ]
   }
- ]
+ ],
+ "plan": {
+  "verificado": "2026-10-08",
+  "aviso": "Todo esto exige acceso de Editor o de Administrador a cada web. Los tiempos son estimaciones; la mejora exacta se verá al volver a medir.",
+  "hallazgos": [
+   "Grupo VL: una sola imagen (Sin-titulo-1_Mesa-de-trabajo-1.png, de 2023) pesa 30,7 MB y es casi todo el peso de la portada: 36,9 de sus 38 MB son imágenes.",
+   "SUAT, Tresur y Maquinfra: banners en PNG de 1 a 2,6 MB. Pasarlos a WebP ahorraría 4,6, 4,6 y 2,2 MB (estimación de Lighthouse).",
+   "Tresur y Maquinfra: el servidor tarda 5,1 y 3,4 segundos en responder, antes de mostrar nada (medición de laboratorio).",
+   "Tresur: sus tipografías se piden por http y el navegador las bloquea.",
+   "Maquinfra: pide imágenes por http (el navegador las sube a https a la fuerza) y tiene enlaces que dan error 404."
+  ],
+  "fases": [
+   {
+    "nombre": "Primero",
+    "texto": "Reemplazar la imagen de 30 MB, poner el título principal (H1), corregir enlaces y textos viejos, y pasar a https. Es lo más visible y lo más barato."
+   },
+   {
+    "nombre": "Después",
+    "texto": "Optimización de imágenes y caché en las 4 webs."
+   },
+   {
+    "nombre": "Tras la reunión",
+    "texto": "Cifras oficiales, certificaciones y LinkedIn: dependen de lo que confirme Grupo VL."
+   },
+   {
+    "nombre": "Según el contrato",
+    "texto": "Hosting: depende de qué cubre el contrato con v2networks."
+   }
+  ],
+  "medicion": "Cada mes se repiten las mediciones de Lighthouse y se comparan con las de hoy (7-oct-2026): así se ve cuánto mejora, por ejemplo, la velocidad en celular (hoy entre 27 y 33 de 100).",
+  "filas": [
+   {
+    "fase": "Primero",
+    "problema": "Imagen de 30 MB en la portada de Grupo VL",
+    "causa": "Sin-titulo-1_Mesa-de-trabajo-1.png (2023) pesa 30,7 MB",
+    "solucion": "Reemplazarla por una de menos de 300 KB, en WebP",
+    "necesita": "Rol Editor en WordPress",
+    "esfuerzo": "Minutos"
+   },
+   {
+    "fase": "Primero",
+    "problema": "Portadas sin título principal (H1)",
+    "causa": "Las 4 portadas no tienen H1",
+    "solucion": "Marcar un título de la portada como H1",
+    "necesita": "Rol Editor",
+    "esfuerzo": "10 min por web"
+   },
+   {
+    "fase": "Primero",
+    "problema": "Contenido desactualizado",
+    "causa": "\"Hello world\" (Grupo VL); Lorem ipsum, enlaces a suat.maqueta.com.es y sin descripción para Google (SUAT); © 2021 (Maquinfra); enlace de LinkedIn de Tresur a /admin/",
+    "solucion": "Borrar o corregir cada uno",
+    "necesita": "Rol Editor",
+    "esfuerzo": "2 a 3 horas en total"
+   },
+   {
+    "fase": "Primero",
+    "problema": "Direcciones http",
+    "causa": "Tipografías de Tresur e imágenes de Maquinfra pedidas por http",
+    "solucion": "Cambiar a https con buscar y reemplazar en la base de datos (con respaldo previo)",
+    "necesita": "Administrador de WordPress",
+    "esfuerzo": "1 hora"
+   },
+   {
+    "fase": "Después",
+    "problema": "Banners pesados",
+    "causa": "PNG de 1 a 2,6 MB en SUAT, Tresur y Maquinfra",
+    "solucion": "Plugin de optimización: WebP y carga diferida de las imágenes de más abajo",
+    "necesita": "Administrador de WordPress",
+    "esfuerzo": "1 a 2 horas por web"
+   },
+   {
+    "fase": "Después",
+    "problema": "Respuesta lenta del servidor",
+    "causa": "Tresur 5,1 s y Maquinfra 3,4 s antes de mostrar nada",
+    "solucion": "Plugin de caché; revisar el plan de hosting o cambiar de proveedor",
+    "necesita": "Administrador; contrato de hosting (v2networks)",
+    "esfuerzo": "Depende del hosting"
+   },
+   {
+    "fase": "Tras la reunión",
+    "problema": "Cifras distintas",
+    "causa": "La web, la descripción de Google y LinkedIn dicen empleados, clientes y regiones distintos",
+    "solucion": "Una sola tabla de cifras oficiales, usada en los tres lugares",
+    "necesita": "Respuestas de la reunión",
+    "esfuerzo": "Tras confirmar"
+   },
+   {
+    "fase": "Tras la reunión",
+    "problema": "Certificaciones sin alcance",
+    "causa": "ISO sin alcance ni vigencia visibles",
+    "solucion": "Publicar los certificados con alcance y fecha",
+    "necesita": "Certificados de Grupo VL",
+    "esfuerzo": "Al recibirlos"
+   },
+   {
+    "fase": "Tras la reunión",
+    "problema": "LinkedIn con poco alcance",
+    "causa": "Unos 618 seguidores para más de 1.000 trabajadores",
+    "solucion": "Publicar 2 o 3 veces por semana e invitar a los trabajadores a seguir las páginas",
+    "necesita": "Rol de administrador en LinkedIn",
+    "esfuerzo": "Constante"
+   }
+  ],
+  "costos": {
+   "consultado": "2026-10-08",
+   "honorarios": {
+    "texto": "Las mejoras de las fases Primero y Después están incluidas en el plan mensual de mantención y mejoras: no se cobran aparte ni por horas. Lo que quede fuera del plan se cotiza como proyecto, con aprobación previa de Grupo VL.",
+    "filas": [
+     {
+      "concepto": "Plan Base",
+      "incluye": "Mantención de grupovl.cl, LinkedIn del grupo con 8 publicaciones al mes y reporte mensual",
+      "valor": "$575.000 al mes"
+     },
+     {
+      "concepto": "Sitio web adicional",
+      "incluye": "Mantención y mejoras de cada web de una empresa (SUAT, Tresur, Maquinfra)",
+      "valor": "+$90.000 al mes por sitio (valor propuesto, por confirmar)"
+     }
+    ],
+    "ejemplo": "Con las 4 webs: $575.000 + 3 sitios × $90.000 = $845.000 al mes. LinkedIn propio de cada empresa y convocatorias de empleo se suman solo si se contratan."
+   },
+   "terceros": [
+    {
+     "herramienta": "Reemplazar la imagen de 30 MB",
+     "uso": "Portada de Grupo VL",
+     "precio": "Sin costo",
+     "nota": "Se exporta de nuevo en WebP; no necesita plugin."
+    },
+    {
+     "herramienta": "WP Rocket (caché)",
+     "uso": "Velocidad de cada web",
+     "precio": "US$59,95 al año por 1 web; US$119,95 al año por 3 webs",
+     "nota": "Precios públicos de wp-rocket.me. Para las 4 webs: US$179,90 al año (plan de 3 + plan de 1)."
+    },
+    {
+     "herramienta": "LiteSpeed Cache (caché)",
+     "uso": "Alternativa gratuita a WP Rocket",
+     "precio": "Gratis",
+     "nota": "La caché solo funciona si el hosting usa servidor LiteSpeed: depende del hosting."
+    },
+    {
+     "herramienta": "Smush (imágenes)",
+     "uso": "Comprimir y cargar imágenes más tarde",
+     "precio": "Versión gratis",
+     "nota": "La versión gratis omite imágenes de más de 5 MB y no convierte a WebP (eso es del plan Pro, que no consulté). No sirve para el archivo de 30 MB."
+    },
+    {
+     "herramienta": "ShortPixel (imágenes)",
+     "uso": "Convertir a WebP y comprimir",
+     "precio": "Desde US$3,99 al mes",
+     "nota": "Dato de sitios de comparación; confirmar en shortpixel.com antes de cotizar."
+    },
+    {
+     "herramienta": "Hosting y dominio",
+     "uso": "Servidor de cada web",
+     "precio": "A cotizar con v2networks",
+     "nota": "Ya lo paga Grupo VL. No sé qué cubre su contrato ni cuándo vence."
+    }
+   ],
+   "nota": "Los costos de terceros los paga Grupo VL, no están incluidos en los honorarios. Precios en dólares, sin IVA ni conversión a pesos, consultados el 8-oct-2026: pueden cambiar. Con herramientas gratuitas, el gasto externo puede ser cero si el hosting lo permite."
+  }
+ }
 }

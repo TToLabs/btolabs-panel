@@ -117,6 +117,7 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
     { id: 'inicio', nombre: 'Resumen ejecutivo', grupo: 'Informe para gerencia' },
     { id: 'webs', nombre: 'Webs', grupo: 'Informe para gerencia' },
     { id: 'linkedin', nombre: 'LinkedIn', grupo: 'Informe para gerencia' },
+    { id: 'plan', nombre: 'Plan de mejora', grupo: 'Informe para gerencia' },
     { id: 'informes', nombre: 'Descargas', grupo: 'Informe para gerencia' },
     { id: 'accesos', nombre: 'Accesos', grupo: 'Uso interno' },
     { id: 'confirmar', nombre: 'Por confirmar', grupo: 'Uso interno' }
@@ -226,6 +227,25 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
     return h;
   }
 
+  function vPlan() {
+    var P = D.plan;
+    var h = cabecera('Plan de mejora', 'Qué se encontró, qué lo causa y cómo se soluciona. Hallazgos verificados el ' + fmtFecha(P.verificado) + '.', true);
+    h += '<p class="aviso">' + esc(P.aviso) + '</p>';
+    h += '<div class="grid g2"><div class="card"><h2>Lo que encontramos</h2><ul class="lista">' + P.hallazgos.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>' +
+      '<div class="card"><h2>Orden recomendado</h2><ol class="lista">' + P.fases.map(function (f) { return '<li><b>' + esc(f.nombre) + ':</b> ' + esc(f.texto) + '</li>'; }).join('') + '</ol><p class="sub" style="margin-top:12px">' + esc(P.medicion) + '</p></div></div>';
+    h += '<div class="card tabla" style="margin-top:16px"><h2>Problemas y soluciones</h2><table><thead><tr><th>Fase</th><th>Problema</th><th>Qué lo causa</th><th>Solución</th><th>Se necesita</th><th>Esfuerzo (estimado)</th></tr></thead><tbody>' +
+      P.filas.map(function (f) { return '<tr><td><b>' + esc(f.fase) + '</b></td><td>' + esc(f.problema) + '</td><td>' + esc(f.causa) + '</td><td>' + esc(f.solucion) + '</td><td>' + esc(f.necesita) + '</td><td>' + esc(f.esfuerzo) + '</td></tr>'; }).join('') + '</tbody></table></div>';
+    var K = P.costos;
+    h += '<div class="grid g2" style="margin-top:16px"><div class="card"><h2>Costo para Grupo VL · honorarios</h2><p>' + esc(K.honorarios.texto) + '</p>' +
+      '<div class="tabla"><table><thead><tr><th>Concepto</th><th>Incluye</th><th>Valor</th></tr></thead><tbody>' +
+      K.honorarios.filas.map(function (f) { return '<tr><td><b>' + esc(f.concepto) + '</b></td><td>' + esc(f.incluye) + '</td><td>' + esc(f.valor) + '</td></tr>'; }).join('') + '</tbody></table></div>' +
+      '<p class="sub" style="margin-top:12px"><b>Ejemplo:</b> ' + esc(K.honorarios.ejemplo) + '</p></div>' +
+      '<div class="card"><h2>Costo para Grupo VL · herramientas de terceros</h2><div class="tabla"><table><thead><tr><th>Herramienta</th><th>Precio</th><th>Nota</th></tr></thead><tbody>' +
+      K.terceros.map(function (x) { return '<tr><td><b>' + esc(x.herramienta) + '</b><br><span class="sub">' + esc(x.uso) + '</span></td><td>' + esc(x.precio) + '</td><td>' + esc(x.nota) + '</td></tr>'; }).join('') + '</tbody></table></div></div></div>' +
+      '<p class="aviso" style="margin-top:16px">' + esc(K.nota) + '</p>';
+    return h;
+  }
+
   function vInformes() {
     var h = cabecera('Descargas', 'Cada sección en PDF (hoja carta) o sus datos en CSV para Excel. Las de uso interno no se entregan al cliente.', false);
     h += '<div class="grid g2">' + SECCIONES.filter(function (s) { return s.id !== 'informes'; }).map(function (s) {
@@ -235,7 +255,7 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
     return h;
   }
 
-  var VISTAS = { inicio: vInicio, webs: vWebs, linkedin: vLinkedin, accesos: vAccesos, confirmar: vConfirmar, informes: vInformes };
+  var VISTAS = { inicio: vInicio, webs: vWebs, linkedin: vLinkedin, plan: vPlan, accesos: vAccesos, confirmar: vConfirmar, informes: vInformes };
 
   /* ---------- CSV por sección ---------- */
   function filasCSV(id) {
@@ -244,6 +264,7 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
       return [s.nombre, s.url, notaWeb(s), c.rendimiento, c.seo, c.accesibilidad, c.buenas_practicas, e.rendimiento, (s.seo || {}).h1 ? 'Sí' : 'No', (s.seo || {}).meta_description ? 'Sí' : 'No', (s.contenido || {}).ultima_entrada || 'Ninguna'];
     }));
     if (id === 'linkedin') return [['Página', 'URL', 'Seguidores', 'Empleados', 'Última publicación', 'Publicaciones 3 meses', 'Interacción últimas 5']].concat(D.linkedin.map(function (l) { return [l.pagina, l.url, l.seguidores, l.empleados, l.ultima_publicacion, l.publicaciones_3m, l.interaccion_ultimas5]; }));
+    if (id === 'plan') return [['Fase', 'Problema', 'Qué lo causa', 'Solución', 'Se necesita', 'Esfuerzo (estimado)']].concat(D.plan.filas.map(function (f) { return [f.fase, f.problema, f.causa, f.solucion, f.necesita, f.esfuerzo]; }), [[]], [['Costo de terceros', 'Uso', 'Precio', 'Nota']], D.plan.costos.terceros.map(function (x) { return [x.herramienta, x.uso, x.precio, x.nota]; }));
     if (id === 'accesos') return [['Plataforma', 'Empresa', 'Estado', 'Rol', 'Cuenta', 'Notas']].concat(D.accesos.map(function (a) { return [a.plataforma, a.empresa, a.estado, a.rol, a.cuenta, a.notas]; }));
     if (id === 'confirmar') { var f = [['Grupo', 'Dato a confirmar']]; D.confirmar.forEach(function (g) { g.items.forEach(function (x) { f.push([g.grupo, x]); }); }); return f; }
     return [];
