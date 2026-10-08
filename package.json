@@ -2,7 +2,7 @@
   "name": "btolabs-panel",
   "version": "1.0.0",
   "private": true,
-  "description": "Panel interno de trabajo de BToLabs (solo lectura): diagnóstico, accesos e informes de Grupo VL.",
+  "description": "Panel interno de trabajo de BTo Innova (solo lectura): diagnóstico, accesos e informes de Grupo VL.",
   "scripts": {
     "sync": "node scripts/preparar-www.js && cap sync android",
     "build:apk": "cd android && gradlew.bat assembleDebug"

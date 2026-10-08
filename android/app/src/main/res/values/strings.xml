@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Panel BToLabs</string>
-    <string name="title_activity_main">Panel BToLabs</string>
+    <string name="app_name">Panel BTo Innova</string>
+    <string name="title_activity_main">Panel BTo Innova</string>
     <string name="package_name">cl.btolabs.panel</string>
     <string name="custom_url_scheme">cl.btolabs.panel</string>
 </resources>

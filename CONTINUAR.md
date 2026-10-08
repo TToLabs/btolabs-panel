@@ -1,11 +1,11 @@
-# CONTINUAR — Panel BToLabs
+# CONTINUAR — Panel BTo Innova
 
 > Antes de seguir: lee completo `~/.claude/CLAUDE.md` (reglas generales) y usa la bóveda de Obsidian del proyecto Grupo VL (`../Grupo VL/boveda/`, empezar por `Índice.md` y `Diagnóstico mes cero.md`).
 
 Actualizado: 7-oct-2026.
 
 ## Qué es
-Panel interno de trabajo de Alberto (BToLabs), **solo lectura**: diagnóstico de hoy (mes cero) de las webs y redes de Grupo VL, estado de accesos, datos por confirmar y descargas (PDF y CSV). Web y APK de Android con el mismo `docs/index.html`.
+Panel interno de trabajo de Alberto (BTo Innova), **solo lectura**: diagnóstico de hoy (mes cero) de las webs y redes de Grupo VL, estado de accesos, datos por confirmar y descargas (PDF y CSV). Web y APK de Android con el mismo `docs/index.html`.
 
 ## Estructura
 - `docs/index.html`: toda la app (HTML, CSS y JS en un archivo, sin dependencias externas; funciona sin internet dentro de la APK).
@@ -43,6 +43,12 @@ Panel interno de trabajo de Alberto (BToLabs), **solo lectura**: diagnóstico de
 - **Probado en el teléfono real:** la app v1 muestra el aviso "Hay una versión nueva del panel" al abrir (verificado con captura). Al tocar "Actualizar", Android abre "Instalar aplicaciones desconocidas" y **Alberto debe otorgar el permiso él mismo** (es un ajuste de seguridad); después confirma la instalación. Falta confirmar que la v2 queda instalada.
 - **Sección "Presupuesto por ítem"** (gerencia): 8 ítems con precio fijo (total $390.000: Primero $110.000, Después $200.000, Tras la reunión $80.000); la gerencia marca ítems, el total se actualiza y el PDF muestra solo lo elegido. **Propuesta por confirmar.** Reemplaza lo dicho antes ("incluidas en el plan mensual").
 - **Las ganancias, horas y tarifa interna NO están en el panel** (es una web pública): viven en `Grupo VL/boveda/Mis ganancias (privado).md`. Retención 2026: 15,25 %.
+
+## Nombre de la empresa (8-oct-2026)
+- Ahora es **BTo Innova, Soluciones Tecnológicas** (corto en la interfaz: **BTo Innova**). Antes BToLabs. Cambiado en el panel (título, menú, portada del PDF con el nombre completo) y en el nombre de la app ("Panel BTo Innova").
+- **No se renombró lo técnico, a propósito:** appId `cl.btolabs.panel`, organización de GitHub `TToLabs`, repo `btolabs-panel` y las URLs de Pages (no redirigen; renombrar rompe las actualizaciones y los enlaces).
+- **Versión 3** (publicada con el nombre nuevo): `APP_VERSION = 3` y `docs/version.json` en 3.
+- Nota: las APK de las versiones 1 y 2 pesaban 7,5 MB por espacio sin usar que dejan las compilaciones incrementales; la limpia pesa 4,0 MB. Es inofensivo (las firmas verifican).
 
 ## Pendientes
 0. Alberto: otorgar el permiso de instalación en el teléfono y confirmar la actualización a la v2.

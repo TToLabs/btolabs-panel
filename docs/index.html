@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>Panel BToLabs</title>
+<title>Panel BTo Innova</title>
 <!--
-  Panel interno de BToLabs (solo lectura).
+  Panel interno de BTo Innova (solo lectura).
   - Los datos viven en datos.json. La web y la APK los leen al abrir: un cambio publicado se ve al instante sin reinstalar.
   - En la APK se piden a la URL publicada (DATOS_REMOTOS); si no hay red, se usa la última copia guardada o la que viene dentro de la app.
   - Sin contraseñas: el estado de los accesos se describe, nunca se guardan claves.
@@ -100,7 +100,7 @@ tr.off{opacity:.45}
 <body>
 <div class="app">
   <nav class="side" aria-label="Secciones">
-    <p class="marca"><img src="img/logo-grupovl.png" alt="Grupo VL"><span>Grupo VL<small>Diagnóstico digital · preparado por BToLabs</small></span></p>
+    <p class="marca"><img src="img/logo-grupovl.png" alt="Grupo VL"><span>Grupo VL<small>Diagnóstico digital · preparado por BTo Innova</small></span></p>
     <ul class="menu" id="menu"></ul>
     <p class="pie" id="pie"></p>
   </nav>
@@ -112,7 +112,7 @@ tr.off{opacity:.45}
   var DATOS_REMOTOS = 'https://ttolabs.github.io/btolabs-panel/datos.json';
   var WEB = 'https://ttolabs.github.io/btolabs-panel/';
   // La versión vive en DOS lugares y se sube en cada APK nueva: aquí (la que trae la app) y en docs/version.json (la publicada).
-  var APP_VERSION = 2;
+  var APP_VERSION = 3;
   var VERSION_URL = 'https://ttolabs.github.io/btolabs-panel/version.json';
   var esApp = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 
@@ -156,7 +156,7 @@ tr.off{opacity:.45}
 
   /* ---------- Vistas ---------- */
   function cabecera(titulo, sub, conDescarga) {
-    return '<div class="solo-print portada"><img src="img/logo-grupovl.png" alt="" style="height:40px;vertical-align:middle;margin-right:10px"><b>Grupo VL · Diagnóstico digital</b><br>' + esc(titulo) + ' · datos al ' + fmtFecha(D.actualizado) + ' · preparado por BToLabs</div>' +
+    return '<div class="solo-print portada"><img src="img/logo-grupovl.png" alt="" style="height:40px;vertical-align:middle;margin-right:10px"><b>Grupo VL · Diagnóstico digital</b><br>' + esc(titulo) + ' · datos al ' + fmtFecha(D.actualizado) + ' · preparado por BTo Innova, Soluciones Tecnológicas</div>' +
       '<div class="top"><div><h1>' + esc(titulo) + '</h1><p class="sub">' + sub + '</p></div>' +
       (conDescarga ? '<div class="acciones"><button class="btn" data-accion="pdf">Descargar PDF</button><button class="btn" data-accion="csv">Descargar CSV</button></div>' : '') + '</div>';
   }
@@ -327,7 +327,7 @@ tr.off{opacity:.45}
     actual = id;
     document.getElementById('main').innerHTML = VISTAS[id]();
     [].forEach.call(document.querySelectorAll('#menu button'), function (b) { b.setAttribute('aria-current', b.dataset.s === id ? 'page' : 'false'); });
-    document.title = SECCIONES.filter(function (s) { return s.id === id; })[0].nombre + ' · Panel BToLabs';
+    document.title = SECCIONES.filter(function (s) { return s.id === id; })[0].nombre + ' · Panel BTo Innova';
     if (id === 'presupuesto') actualizarTotal();
     try { history.replaceState(null, '', '?s=' + id); } catch (e) {}
   }
