@@ -37,8 +37,15 @@ Panel interno de trabajo de Alberto (BToLabs), **solo lectura**: diagnóstico de
 - Paseo guiado con voz y subtítulos: scripts en la carpeta temporal del equipo (no están en el repo). Ver `Grupo VL/boveda/Plan técnico y costos.md` para el detalle.
 - **La APK instalada en el teléfono es la anterior**: no muestra "Plan de mejora" hasta reinstalar la nueva (`docs/panel-btolabs.apk`). El teléfono no estaba conectado por adb.
 
+## Actualizador y presupuesto (8-oct, tarde)
+- **Actualizador de APK integrado** (Alberto lo pidió; revierte la excepción "sin actualizador" del 7-oct): `ApkInstalador.java` + `MainActivity` (limpia caché y borra el apk descargado en `onResume`) + permiso `REQUEST_INSTALL_PACKAGES` + FileProvider `external-files-path`. Patrón copiado de DAOMA.
+- **Versión en DOS lugares, se sube junto en cada APK nueva:** `APP_VERSION` en `docs/index.html` y `docs/version.json` (`version`, `apk`, `novedades`). Hoy: **2**. Flujo de publicar: subir las dos versiones → `npm run sync` → compilar → copiar la APK a `docs/panel-btolabs.apk` → commit y push.
+- **Probado en el teléfono real:** la app v1 muestra el aviso "Hay una versión nueva del panel" al abrir (verificado con captura). Al tocar "Actualizar", Android abre "Instalar aplicaciones desconocidas" y **Alberto debe otorgar el permiso él mismo** (es un ajuste de seguridad); después confirma la instalación. Falta confirmar que la v2 queda instalada.
+- **Sección "Presupuesto por ítem"** (gerencia): 8 ítems con precio fijo (total $390.000: Primero $110.000, Después $200.000, Tras la reunión $80.000); la gerencia marca ítems, el total se actualiza y el PDF muestra solo lo elegido. **Propuesta por confirmar.** Reemplaza lo dicho antes ("incluidas en el plan mensual").
+- **Las ganancias, horas y tarifa interna NO están en el panel** (es una web pública): viven en `Grupo VL/boveda/Mis ganancias (privado).md`. Retención 2026: 15,25 %.
+
 ## Pendientes
-0. Reinstalar la APK en el teléfono (bajarla de la web o por adb).
+0. Alberto: otorgar el permiso de instalación en el teléfono y confirmar la actualización a la v2.
 1. Agregar al panel: checklist mensual, guías por ítem, vista en vivo (solo Alberto) e informe semanal y mensual para la gerencia.
 2. Cargar los números de LinkedIn cuando Alberto los cuente.
 3. Después de la reunión: actualizar accesos y datos confirmados.
