@@ -107,6 +107,9 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
   'use strict';
   var DATOS_REMOTOS = 'https://ttolabs.github.io/btolabs-panel/datos.json';
   var WEB = 'https://ttolabs.github.io/btolabs-panel/';
+  // La versión vive en DOS lugares y se sube en cada APK nueva: aquí (la que trae la app) y en docs/version.json (la publicada).
+  var APP_VERSION = 1;
+  var VERSION_URL = 'https://ttolabs.github.io/btolabs-panel/version.json';
   var esApp = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 
   // localStorage puede lanzar SecurityError en algunos WebView: siempre envuelto
@@ -309,6 +312,35 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
     var b = e.target.closest('[data-accion]'); if (b) accion(b.dataset.accion, b.dataset.seccion);
   });
 
+  /* ---------- Actualizador: compara la versión publicada con la de esta app ---------- */
+  function chequearActualizacion() {
+    if (!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform())) return Promise.resolve();
+    return fetch(VERSION_URL + '?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (v) {
+      if (v && v.version > APP_VERSION) mostrarActualizacion(v);
+    }).catch(function () { /* sin internet: se vuelve a chequear al abrir la app */ });
+  }
+  function mostrarActualizacion(v) {
+    if (document.getElementById('aviso-actualizacion')) return;
+    var b = document.createElement('div');
+    b.id = 'aviso-actualizacion'; b.className = 'no-print';
+    b.setAttribute('role', 'alert');
+    b.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--acc);color:#fff;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:14px';
+    b.innerHTML = '<span style="flex:1;min-width:200px"><b>Hay una versión nueva del panel.</b> ' + esc(v.novedades || '') + '</span>' +
+      '<button type="button" data-a="ok" style="all:unset;cursor:pointer;background:#fff;color:var(--acc);font-weight:700;padding:8px 14px;border-radius:4px">Actualizar</button>' +
+      '<button type="button" data-a="no" style="all:unset;cursor:pointer;padding:8px 10px;text-decoration:underline">Más tarde</button>';
+    b.addEventListener('click', function (e) {
+      var a = e.target.getAttribute && e.target.getAttribute('data-a'); if (!a) return;
+      if (a === 'no') { b.remove(); return; }
+      var btn = e.target; btn.textContent = 'Descargando…';
+      var fin = function () { btn.textContent = 'Actualizar'; };
+      var P = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.ApkInstalador;
+      if (P) P.descargarEInstalar({ url: v.apk }).catch(function () { window.open(v.apk, '_system'); }).then(fin);
+      else { window.open(v.apk, '_system'); fin(); }
+    });
+    document.body.appendChild(b);
+  }
+  window.chequearActualizacion = chequearActualizacion;
+
   async function pedirPermisoNotificaciones() {
     if (!esApp) return;
     try {
@@ -326,6 +358,7 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
     if (q.get('pdf')) setTimeout(function () { window.print(); }, 400);
     if (q.get('csv')) descargarCSV(actual);
     setTimeout(pedirPermisoNotificaciones, 1500);
+    chequearActualizacion();
   }).catch(function () {
     document.getElementById('main').innerHTML = '<p class="estado">No se pudieron cargar los datos. Revisa la conexión e intenta de nuevo.</p>';
   });
