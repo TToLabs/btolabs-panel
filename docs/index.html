@@ -64,6 +64,9 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute
 .tabla{overflow-x:auto}
 ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
 .vacio{color:var(--muted);font-style:italic}
+tr.off{opacity:.45}
+.chk{width:18px;height:18px;accent-color:var(--acc)}
+.tot{font-size:26px;font-weight:700;color:var(--acc)}
 .aviso{border-left:3px solid var(--acc);background:var(--acc2);padding:12px 14px;border-radius:3px;font-size:14px;margin-bottom:16px}
 .pend{color:var(--muted);font-weight:600}
 .solo-print{display:none}
@@ -86,6 +89,7 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
   .app{display:block}
   main{padding:0}
   .card{border-color:#ccc}
+  tr.off{display:none}   /* el PDF muestra solo lo que se eligió */
   .kpi,.fila,.metr,tr,li{break-inside:avoid}   /* las tarjetas altas pueden partirse; sus filas no */
   .solo-print{display:block}
   .portada{border-bottom:2px solid #1f4e9c;padding-bottom:10px;margin-bottom:16px}
@@ -108,7 +112,7 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
   var DATOS_REMOTOS = 'https://ttolabs.github.io/btolabs-panel/datos.json';
   var WEB = 'https://ttolabs.github.io/btolabs-panel/';
   // La versión vive en DOS lugares y se sube en cada APK nueva: aquí (la que trae la app) y en docs/version.json (la publicada).
-  var APP_VERSION = 1;
+  var APP_VERSION = 2;
   var VERSION_URL = 'https://ttolabs.github.io/btolabs-panel/version.json';
   var esApp = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 
@@ -121,6 +125,7 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
     { id: 'webs', nombre: 'Webs', grupo: 'Informe para gerencia' },
     { id: 'linkedin', nombre: 'LinkedIn', grupo: 'Informe para gerencia' },
     { id: 'plan', nombre: 'Plan de mejora', grupo: 'Informe para gerencia' },
+    { id: 'presupuesto', nombre: 'Presupuesto por ítem', grupo: 'Informe para gerencia' },
     { id: 'informes', nombre: 'Descargas', grupo: 'Informe para gerencia' },
     { id: 'accesos', nombre: 'Accesos', grupo: 'Uso interno' },
     { id: 'confirmar', nombre: 'Por confirmar', grupo: 'Uso interno' }
@@ -249,6 +254,33 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
     return h;
   }
 
+  /* ---------- Presupuesto por ítem: la gerencia marca lo que quiere; el total se calcula en pantalla ---------- */
+  var SEL = {};
+  function clp(n) { return '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  function actualizarTotal() {
+    var tot = 0, n = 0;
+    D.plan.presupuesto.items.forEach(function (it) {
+      var on = SEL[it.id] !== false; if (on) { tot += it.precio; n++; }
+      var fila = document.querySelector('tr[data-fila="' + it.id + '"]'); if (fila) fila.classList.toggle('off', !on);
+      var c = document.querySelector('input[data-pid="' + it.id + '"]'); if (c) c.checked = on;
+    });
+    var a = document.getElementById('pres-tot'), b = document.getElementById('pres-n');
+    if (a) a.textContent = clp(tot); if (b) b.textContent = n + ' de ' + D.plan.presupuesto.items.length + ' ítems elegidos';
+  }
+  function vPresupuesto() {
+    var P = D.plan.presupuesto;
+    var h = cabecera('Presupuesto por ítem', esc(P.texto), true);
+    h += '<p class="aviso"><b>' + esc(P.estado) + '.</b> ' + esc(P.nota) + '</p>';
+    h += '<div class="acciones no-print" style="margin-bottom:12px"><button class="btn pri" type="button" data-pkg="todo">Elegir todo</button>' +
+      P.paquetes.map(function (p, i) { return '<button class="btn" type="button" data-pkg="' + i + '">Solo ' + esc(p.nombre) + '</button>'; }).join('') + '</div>';
+    h += '<div class="card tabla"><table><thead><tr><th class="no-print">Elegir</th><th>Fase</th><th>Ítem</th><th>Qué incluye</th><th>Precio</th></tr></thead><tbody>' +
+      P.items.map(function (it) {
+        return '<tr data-fila="' + it.id + '"><td class="no-print"><input class="chk" type="checkbox" data-pid="' + it.id + '" aria-label="Elegir ' + esc(it.titulo) + '" checked></td><td>' + esc(it.fase) + '</td><td><b>' + esc(it.titulo) + '</b></td><td>' + esc(it.incluye) + '</td><td style="white-space:nowrap"><b>' + clp(it.precio) + '</b></td></tr>';
+      }).join('') + '</tbody></table></div>';
+    h += '<div class="card" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between"><div><h2 style="margin:0 0 4px">Total elegido</h2><span id="pres-n" class="sub"></span></div><span id="pres-tot" class="tot"></span></div>';
+    return h;
+  }
+
   function vInformes() {
     var h = cabecera('Descargas', 'Cada sección en PDF (hoja carta) o sus datos en CSV para Excel. Las de uso interno no se entregan al cliente.', false);
     h += '<div class="grid g2">' + SECCIONES.filter(function (s) { return s.id !== 'informes'; }).map(function (s) {
@@ -258,7 +290,7 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
     return h;
   }
 
-  var VISTAS = { inicio: vInicio, webs: vWebs, linkedin: vLinkedin, plan: vPlan, accesos: vAccesos, confirmar: vConfirmar, informes: vInformes };
+  var VISTAS = { inicio: vInicio, webs: vWebs, linkedin: vLinkedin, plan: vPlan, presupuesto: vPresupuesto, accesos: vAccesos, confirmar: vConfirmar, informes: vInformes };
 
   /* ---------- CSV por sección ---------- */
   function filasCSV(id) {
@@ -267,6 +299,7 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
       return [s.nombre, s.url, notaWeb(s), c.rendimiento, c.seo, c.accesibilidad, c.buenas_practicas, e.rendimiento, (s.seo || {}).h1 ? 'Sí' : 'No', (s.seo || {}).meta_description ? 'Sí' : 'No', (s.contenido || {}).ultima_entrada || 'Ninguna'];
     }));
     if (id === 'linkedin') return [['Página', 'URL', 'Seguidores', 'Empleados', 'Última publicación', 'Publicaciones 3 meses', 'Interacción últimas 5']].concat(D.linkedin.map(function (l) { return [l.pagina, l.url, l.seguidores, l.empleados, l.ultima_publicacion, l.publicaciones_3m, l.interaccion_ultimas5]; }));
+    if (id === 'presupuesto') return [['Fase', 'Ítem', 'Qué incluye', 'Precio (CLP)', 'Elegido']].concat(D.plan.presupuesto.items.map(function (it) { return [it.fase, it.titulo, it.incluye, it.precio, SEL[it.id] === false ? 'No' : 'Sí']; }));
     if (id === 'plan') return [['Fase', 'Problema', 'Qué lo causa', 'Solución', 'Se necesita', 'Esfuerzo (estimado)']].concat(D.plan.filas.map(function (f) { return [f.fase, f.problema, f.causa, f.solucion, f.necesita, f.esfuerzo]; }), [[]], [['Costo de terceros', 'Uso', 'Precio', 'Nota']], D.plan.costos.terceros.map(function (x) { return [x.herramienta, x.uso, x.precio, x.nota]; }));
     if (id === 'accesos') return [['Plataforma', 'Empresa', 'Estado', 'Rol', 'Cuenta', 'Notas']].concat(D.accesos.map(function (a) { return [a.plataforma, a.empresa, a.estado, a.rol, a.cuenta, a.notas]; }));
     if (id === 'confirmar') { var f = [['Grupo', 'Dato a confirmar']]; D.confirmar.forEach(function (g) { g.items.forEach(function (x) { f.push([g.grupo, x]); }); }); return f; }
@@ -295,6 +328,7 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
     document.getElementById('main').innerHTML = VISTAS[id]();
     [].forEach.call(document.querySelectorAll('#menu button'), function (b) { b.setAttribute('aria-current', b.dataset.s === id ? 'page' : 'false'); });
     document.title = SECCIONES.filter(function (s) { return s.id === id; })[0].nombre + ' · Panel BToLabs';
+    if (id === 'presupuesto') actualizarTotal();
     try { history.replaceState(null, '', '?s=' + id); } catch (e) {}
   }
 
@@ -349,6 +383,16 @@ ul.lista{margin:0;padding-left:18px;display:grid;gap:6px}
       if (est.display !== 'granted') await LN.requestPermissions();
     } catch (e) { /* no bloquea el arranque */ }
   }
+
+  document.getElementById('main').addEventListener('change', function (e) {
+    var c = e.target.closest && e.target.closest('input[data-pid]'); if (!c) return;
+    SEL[c.dataset.pid] = c.checked; actualizarTotal();
+  });
+  document.getElementById('main').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-pkg]'); if (!b) return;
+    var P = D.plan.presupuesto, ids = b.dataset.pkg === 'todo' ? P.items.map(function (x) { return x.id; }) : P.paquetes[+b.dataset.pkg].ids;
+    P.items.forEach(function (it) { SEL[it.id] = ids.indexOf(it.id) >= 0; }); actualizarTotal();
+  });
 
   cargar().then(function (j) {
     D = j;

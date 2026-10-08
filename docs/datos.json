@@ -463,7 +463,7 @@
   "costos": {
    "consultado": "2026-10-08",
    "honorarios": {
-    "texto": "Las mejoras de las fases Primero y Después están incluidas en el plan mensual de mantención y mejoras: no se cobran aparte ni por horas. Lo que quede fuera del plan se cotiza como proyecto, con aprobación previa de Grupo VL.",
+    "texto": "Cada mejora se presupuesta por ítem, con precio fijo y sin cobrar por hora (ver Presupuesto por ítem): Grupo VL elige el paquete completo o solo lo que quiera. El plan mensual cubre la mantención y el reporte.",
     "filas": [
      {
       "concepto": "Plan Base",
@@ -517,6 +517,94 @@
     }
    ],
    "nota": "Los costos de terceros los paga Grupo VL, no están incluidos en los honorarios. Precios en dólares, sin IVA ni conversión a pesos, consultados el 8-oct-2026: pueden cambiar. Con herramientas gratuitas, el gasto externo puede ser cero si el hosting lo permite."
+  },
+  "presupuesto": {
+   "estado": "Propuesta por confirmar",
+   "texto": "Cada mejora tiene su precio fijo. Grupo VL puede elegir el paquete completo o solo los ítems que quiera: marque o desmarque y el total se actualiza.",
+   "nota": "Precios en pesos chilenos, por única vez, con boleta de honorarios. No incluyen el hosting ni las licencias de herramientas de terceros (ver Plan de mejora). La mantención y el reporte mensual van aparte, en el plan mensual. Valores propuestos, por confirmar.",
+   "items": [
+    {
+     "id": "p1",
+     "fase": "Primero",
+     "titulo": "Reemplazar la imagen de 30 MB",
+     "incluye": "Exportar de nuevo la imagen de la portada de Grupo VL en WebP (menos de 300 KB), subirla y comprobar que la portada se ve igual.",
+     "precio": 20000
+    },
+    {
+     "id": "p2",
+     "fase": "Primero",
+     "titulo": "Título principal (H1) en las 4 portadas",
+     "incluye": "Marcar un título de cada portada como H1, sin cambiar el diseño.",
+     "precio": 20000
+    },
+    {
+     "id": "p3",
+     "fase": "Primero",
+     "titulo": "Limpieza de contenido desactualizado",
+     "incluye": "Borrar \"Hello world\", el Lorem ipsum, los enlaces a suat.maqueta.com.es y el © 2021; corregir el enlace de LinkedIn de Tresur y agregar la descripción para Google de SUAT.",
+     "precio": 50000
+    },
+    {
+     "id": "p4",
+     "fase": "Primero",
+     "titulo": "Pasar las direcciones a https",
+     "incluye": "Corregir las tipografías de Tresur y las imágenes de Maquinfra pedidas por http, con respaldo previo y revisión.",
+     "precio": 20000
+    },
+    {
+     "id": "p5",
+     "fase": "Después",
+     "titulo": "Optimización de imágenes en las 4 webs",
+     "incluye": "Convertir a WebP y cargar más tarde las imágenes de más abajo, en las 4 webs. El plugin, si corresponde, lo paga Grupo VL.",
+     "precio": 120000
+    },
+    {
+     "id": "p6",
+     "fase": "Después",
+     "titulo": "Caché en las 4 webs",
+     "incluye": "Instalar y configurar la caché en las 4 webs. La licencia, si corresponde, la paga Grupo VL.",
+     "precio": 80000
+    },
+    {
+     "id": "p7",
+     "fase": "Tras la reunión",
+     "titulo": "Cifras oficiales unificadas",
+     "incluye": "Usar una sola tabla de cifras oficiales en la web, la descripción de Google y LinkedIn, una vez confirmadas por Grupo VL.",
+     "precio": 40000
+    },
+    {
+     "id": "p8",
+     "fase": "Tras la reunión",
+     "titulo": "Certificaciones con alcance y vigencia",
+     "incluye": "Publicar los certificados ISO con su alcance y fecha, una vez entregados por Grupo VL.",
+     "precio": 40000
+    }
+   ],
+   "paquetes": [
+    {
+     "nombre": "Primero",
+     "ids": [
+      "p1",
+      "p2",
+      "p3",
+      "p4"
+     ]
+    },
+    {
+     "nombre": "Después",
+     "ids": [
+      "p5",
+      "p6"
+     ]
+    },
+    {
+     "nombre": "Tras la reunión",
+     "ids": [
+      "p7",
+      "p8"
+     ]
+    }
+   ]
   }
  }
 }
