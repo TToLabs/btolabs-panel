@@ -476,7 +476,7 @@
       "valor": "+$90.000 al mes por sitio (valor propuesto, por confirmar)"
      }
     ],
-    "ejemplo": "Con las 4 webs: $575.000 + 3 sitios × $90.000 = $845.000 al mes. LinkedIn propio de cada empresa y convocatorias de empleo se suman solo si se contratan."
+    "ejemplo": "Los planes y precios completos están en la sección Plan y precios."
    },
    "terceros": [
     {
@@ -661,6 +661,72 @@
      ]
     }
    ]
+  },
+  "precios": {
+   "titulo": "Plan y precios",
+   "texto": "Listado de precios, presupuesto de una empresa (que se replica en todas) y plan completo para el grupo.",
+   "estado": "Propuesta por confirmar",
+   "nota": "Precios en pesos chilenos, con boleta de honorarios. El hosting y las licencias de herramientas de terceros los paga Grupo VL. El valor por sitio está por confirmar.",
+   "base": {
+    "concepto": "Plan Base",
+    "incluye": "Mantención de grupovl.cl, LinkedIn del grupo con 8 publicaciones al mes y reporte mensual",
+    "precio": 575000,
+    "unidad": "al mes",
+    "aplica": "Una vez, al holding"
+   },
+   "sitio": {
+    "concepto": "Sitio web de una empresa",
+    "incluye": "Mantención y mejoras de la web de cada empresa (SUAT, Tresur, Maquinfra)",
+    "precio": 90000,
+    "unidad": "al mes",
+    "aplica": "Por empresa"
+   },
+   "linkedin": {
+    "concepto": "LinkedIn propio de una empresa",
+    "incluye": "Calendario y publicaciones en el LinkedIn de la empresa",
+    "precio": 175000,
+    "unidad": "al mes",
+    "aplica": "Por empresa"
+   },
+   "empleo": {
+    "concepto": "Convocatorias de empleo",
+    "incluye": "Formulario y publicación de vacantes, sin entrevistas (las organiza Grupo VL)",
+    "precio": 140000,
+    "unidad": "al mes",
+    "aplica": "Una vez, al holding"
+   },
+   "puntual": {
+    "concepto": "Mejoras web puntuales",
+    "incluye": "8 mejoras en las 4 webs (ver Presupuesto por ítem)",
+    "precio": 390000,
+    "unidad": "pago único",
+    "aplica": "Las 4 webs"
+   },
+   "a_cotizar": [
+    {
+     "concepto": "Gestión de pauta en LinkedIn",
+     "incluye": "La pauta se paga a la plataforma",
+     "precio_texto": "12 % de la inversión, mínimo $100.000",
+     "aplica": "A cotizar, con aprobación previa"
+    },
+    {
+     "concepto": "Caso de éxito",
+     "incluye": "Con datos reales y autorización del cliente nombrado",
+     "precio_texto": "$115.000 cada uno desde el tercero",
+     "aplica": "A cotizar, con aprobación previa"
+    },
+    {
+     "concepto": "Landing o página nueva",
+     "incluye": "Por proyecto",
+     "precio_texto": "$425.000",
+     "aplica": "A cotizar, con aprobación previa"
+    }
+   ],
+   "n_sitios": 3,
+   "n_linkedin": 3,
+   "linkedin_texto": "las 3 empresas",
+   "unico_empresa": 75000,
+   "replica_texto": "Este mismo presupuesto se replica en las 3 empresas: SUAT, Tresur y Maquinfra."
   }
  }
 }

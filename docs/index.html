@@ -112,7 +112,7 @@ tr.off{opacity:.45}
   var DATOS_REMOTOS = 'https://ttolabs.github.io/btolabs-panel/datos.json';
   var WEB = 'https://ttolabs.github.io/btolabs-panel/';
   // La versión vive en DOS lugares y se sube en cada APK nueva: aquí (la que trae la app) y en docs/version.json (la publicada).
-  var APP_VERSION = 5;
+  var APP_VERSION = 6;
   var VERSION_URL = 'https://ttolabs.github.io/btolabs-panel/version.json';
   var esApp = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 
@@ -125,6 +125,7 @@ tr.off{opacity:.45}
     { id: 'webs', nombre: 'Webs', grupo: 'Informe para gerencia' },
     { id: 'linkedin', nombre: 'LinkedIn', grupo: 'Informe para gerencia' },
     { id: 'plan', nombre: 'Plan de mejora', grupo: 'Informe para gerencia' },
+    { id: 'precios', nombre: 'Plan y precios', grupo: 'Informe para gerencia' },
     { id: 'presupuesto', nombre: 'Presupuesto por ítem', grupo: 'Informe para gerencia' },
     { id: 'informes', nombre: 'Descargas', grupo: 'Informe para gerencia' },
     { id: 'accesos', nombre: 'Accesos', grupo: 'Uso interno' },
@@ -254,6 +255,38 @@ tr.off{opacity:.45}
     return h;
   }
 
+  /* ---------- Plan y precios: todo sale de los datos (plan.precios y plan.presupuesto) ---------- */
+  function totalesPrecios(X) {
+    var mod = X.sitio.precio + X.linkedin.precio;
+    var mes = X.base.precio + X.n_sitios * X.sitio.precio + X.n_linkedin * X.linkedin.precio + X.empleo.precio;
+    return { mod: mod, mes: mes, primer: mes + X.puntual.precio };
+  }
+  function vPrecios() {
+    var X = D.plan.precios, T = totalesPrecios(X);
+    var precio = function (f) { return f.precio_texto ? esc(f.precio_texto) : clp(f.precio) + ' ' + esc(f.unidad); };
+    var h = cabecera(X.titulo, esc(X.texto), true);
+    h += '<p class="aviso"><b>' + esc(X.estado) + '.</b> ' + esc(X.nota) + '</p>';
+    h += '<div class="card tabla"><h2>1 · Listado de precios</h2><table><thead><tr><th>Concepto</th><th>Incluye</th><th>Precio</th><th>Se aplica</th></tr></thead><tbody>' +
+      [X.base, X.sitio, X.linkedin, X.empleo, X.puntual].concat(X.a_cotizar).map(function (f) {
+        return '<tr><td><b>' + esc(f.concepto) + '</b></td><td>' + esc(f.incluye) + '</td><td style="white-space:nowrap"><b>' + precio(f) + '</b></td><td>' + esc(f.aplica) + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+    h += '<div class="grid g2" style="margin-top:16px"><div class="card tabla"><h2>2 · Presupuesto de una empresa</h2><table><tbody>' +
+      '<tr><td>Sitio web</td><td style="white-space:nowrap">' + clp(X.sitio.precio) + ' al mes</td></tr>' +
+      '<tr><td>LinkedIn propio</td><td style="white-space:nowrap">' + clp(X.linkedin.precio) + ' al mes</td></tr>' +
+      '<tr><td><b>Total mensual por empresa</b></td><td style="white-space:nowrap"><b>' + clp(T.mod) + ' al mes</b></td></tr>' +
+      '<tr><td>Mejoras web puntuales (referencial, pago único)</td><td style="white-space:nowrap">' + clp(X.unico_empresa) + '</td></tr></tbody></table>' +
+      '<p class="sub" style="margin-top:12px">' + esc(X.replica_texto) + '</p></div>' +
+      '<div class="card tabla"><h2>3 · ' + esc(X.titulo_plan || 'Plan completo para el grupo') + '</h2><table><tbody>' +
+      '<tr><td>' + esc(X.base.concepto) + '</td><td style="white-space:nowrap">' + clp(X.base.precio) + '</td></tr>' +
+      '<tr><td>Sitio web × ' + X.n_sitios + ' empresas</td><td style="white-space:nowrap">' + clp(X.n_sitios * X.sitio.precio) + '</td></tr>' +
+      '<tr><td>LinkedIn propio × ' + X.n_linkedin + ' (' + esc(X.linkedin_texto) + ')</td><td style="white-space:nowrap">' + clp(X.n_linkedin * X.linkedin.precio) + '</td></tr>' +
+      '<tr><td>' + esc(X.empleo.concepto) + '</td><td style="white-space:nowrap">' + clp(X.empleo.precio) + '</td></tr>' +
+      '<tr><td><b>Total mensual</b></td><td style="white-space:nowrap"><b>' + clp(T.mes) + ' al mes</b></td></tr>' +
+      '<tr><td>' + esc(X.puntual.concepto) + ', pago único (ver Presupuesto por ítem)</td><td style="white-space:nowrap">' + clp(X.puntual.precio) + '</td></tr>' +
+      '<tr><td><b>Primer mes (mensual + puntual)</b></td><td style="white-space:nowrap"><b>' + clp(T.primer) + '</b></td></tr></tbody></table></div></div>';
+    return h;
+  }
+
   /* ---------- Presupuesto por ítem: la gerencia marca lo que quiere; el total se calcula en pantalla ---------- */
   var SEL = {};
   function clp(n) { return '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
@@ -299,7 +332,7 @@ tr.off{opacity:.45}
     return h;
   }
 
-  var VISTAS = { inicio: vInicio, webs: vWebs, linkedin: vLinkedin, plan: vPlan, presupuesto: vPresupuesto, accesos: vAccesos, confirmar: vConfirmar, informes: vInformes };
+  var VISTAS = { inicio: vInicio, webs: vWebs, linkedin: vLinkedin, plan: vPlan, precios: vPrecios, presupuesto: vPresupuesto, accesos: vAccesos, confirmar: vConfirmar, informes: vInformes };
 
   /* ---------- CSV por sección ---------- */
   function filasCSV(id) {
@@ -308,6 +341,7 @@ tr.off{opacity:.45}
       return [s.nombre, s.url, notaWeb(s), c.rendimiento, c.seo, c.accesibilidad, c.buenas_practicas, e.rendimiento, (s.seo || {}).h1 ? 'Sí' : 'No', (s.seo || {}).meta_description ? 'Sí' : 'No', (s.contenido || {}).ultima_entrada || 'Ninguna'];
     }));
     if (id === 'linkedin') return [['Página', 'URL', 'Seguidores', 'Empleados', 'Última publicación', 'Publicaciones 3 meses', 'Interacción últimas 5']].concat(D.linkedin.map(function (l) { return [l.pagina, l.url, l.seguidores, l.empleados, l.ultima_publicacion, l.publicaciones_3m, l.interaccion_ultimas5]; }));
+    if (id === 'precios') { var X = D.plan.precios, T = totalesPrecios(X); return [['Concepto', 'Incluye', 'Precio (CLP)', 'Unidad', 'Se aplica']].concat([X.base, X.sitio, X.linkedin, X.empleo, X.puntual].map(function (f) { return [f.concepto, f.incluye, f.precio, f.unidad, f.aplica]; }), X.a_cotizar.map(function (f) { return [f.concepto, f.incluye, f.precio_texto, 'a cotizar', f.aplica]; }), [[], ['Total mensual', '', T.mes, 'al mes', ''], ['Primer mes', '', T.primer, 'mensual + puntual', '']]); }
     if (id === 'presupuesto') return [['Fase', 'Ítem', 'Qué incluye', 'Total del grupo (CLP)', 'Grupo VL', 'SUAT', 'Tresur', 'Maquinfra', 'Todo el grupo', 'Elegido']].concat(D.plan.presupuesto.items.map(function (it) { return [it.fase, it.titulo, it.incluye, it.precio, it.reparto.grupovl, it.reparto.suat, it.reparto.tresur, it.reparto.maquinfra, it.reparto.transversal, SEL[it.id] === false ? 'No' : 'Sí']; }));
     if (id === 'plan') return [['Fase', 'Problema', 'Qué lo causa', 'Solución', 'Se necesita', 'Esfuerzo (estimado)']].concat(D.plan.filas.map(function (f) { return [f.fase, f.problema, f.causa, f.solucion, f.necesita, f.esfuerzo]; }), [[]], [['Costo de terceros', 'Uso', 'Precio', 'Nota']], D.plan.costos.terceros.map(function (x) { return [x.herramienta, x.uso, x.precio, x.nota]; }));
     if (id === 'accesos') return [['Plataforma', 'Empresa', 'Estado', 'Rol', 'Cuenta', 'Notas']].concat(D.accesos.map(function (a) { return [a.plataforma, a.empresa, a.estado, a.rol, a.cuenta, a.notas]; }));

@@ -1,5 +1,5 @@
 {
- "version": 5,
+ "version": 6,
  "apk": "https://ttolabs.github.io/btolabs-panel/panel-btolabs.apk",
- "novedades": "Presupuesto: un solo paquete para todo el grupo, con el reparto por web."
+ "novedades": "Nueva sección: Plan y precios."
 }
