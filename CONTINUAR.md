@@ -39,7 +39,7 @@ Panel interno de trabajo de Alberto (BTo Innova), **solo lectura**: diagnóstico
 
 ## Actualizador y presupuesto (8-oct, tarde)
 - **Actualizador de APK integrado** (Alberto lo pidió; revierte la excepción "sin actualizador" del 7-oct): `ApkInstalador.java` + `MainActivity` (limpia caché y borra el apk descargado en `onResume`) + permiso `REQUEST_INSTALL_PACKAGES` + FileProvider `external-files-path`. Patrón copiado de DAOMA.
-- **Versión en DOS lugares, se sube junto en cada APK nueva:** `APP_VERSION` en `docs/index.html` y `docs/version.json` (`version`, `apk`, `novedades`). Hoy: **2**. Flujo de publicar: subir las dos versiones → `npm run sync` → compilar → copiar la APK a `docs/panel-btolabs.apk` → commit y push.
+- **Versión en DOS lugares, se sube junto en cada APK nueva:** `APP_VERSION` en `docs/index.html` y `docs/version.json` (`version`, `apk`, `novedades`). Hoy: **4**. Flujo de publicar: subir las dos versiones → `npm run sync` → compilar → copiar la APK a `docs/panel-btolabs.apk` → commit y push.
 - **Probado en el teléfono real:** la app v1 muestra el aviso "Hay una versión nueva del panel" al abrir (verificado con captura). Al tocar "Actualizar", Android abre "Instalar aplicaciones desconocidas" y **Alberto debe otorgar el permiso él mismo** (es un ajuste de seguridad); después confirma la instalación. Falta confirmar que la v2 queda instalada.
 - **Sección "Presupuesto por ítem"** (gerencia): 8 ítems con precio fijo (total $390.000: Primero $110.000, Después $200.000, Tras la reunión $80.000); la gerencia marca ítems, el total se actualiza y el PDF muestra solo lo elegido. **Propuesta por confirmar.** Reemplaza lo dicho antes ("incluidas en el plan mensual").
 - **Las ganancias, horas y tarifa interna NO están en el panel** (es una web pública): viven en `Grupo VL/boveda/Mis ganancias (privado).md`. Retención 2026: 15,25 %.
@@ -50,8 +50,13 @@ Panel interno de trabajo de Alberto (BTo Innova), **solo lectura**: diagnóstico
 - **Versión 3** (publicada con el nombre nuevo): `APP_VERSION = 3` y `docs/version.json` en 3.
 - Nota: las APK de las versiones 1 y 2 pesaban 7,5 MB por espacio sin usar que dejan las compilaciones incrementales; la limpia pesa 4,0 MB. Es inofensivo (las firmas verifican).
 
+## Un solo paquete para todo el holding (9-oct-2026)
+- **Decisión de Alberto:** Grupo VL es un holding con un solo dueño y una sola administración: el presupuesto es **siempre un solo paquete para todos**. Los valores por web se muestran solo como información; el total es para todo el grupo. Se mantiene la elección de ítems (completo o algunos), pero no por empresa.
+- En el panel: la tabla "Presupuesto por ítem" tiene la columna "Total del grupo" y cinco columnas informativas (Grupo VL, SUAT, Tresur, Maquinfra, Todo el grupo) con un pie de totales que se recalcula al marcar ítems. El reparto por web es una **estimación mía**, no una medición: la suma de cada fila es el precio del ítem (verificado: 85.000 + 75.000 + 75.000 + 75.000 + 80.000 = 390.000).
+- **Versión 4** (`APP_VERSION` y `docs/version.json`).
+
 ## Pendientes
-0. Alberto: otorgar el permiso de instalación en el teléfono y confirmar la actualización a la v2.
+0. Alberto: otorgar el permiso de instalación en el teléfono y confirmar la actualización (la app instalada es la v1; la publicada es la v4).
 1. Agregar al panel: checklist mensual, guías por ítem, vista en vivo (solo Alberto) e informe semanal y mensual para la gerencia.
 2. Cargar los números de LinkedIn cuando Alberto los cuente.
 3. Después de la reunión: actualizar accesos y datos confirmados.

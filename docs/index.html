@@ -112,7 +112,7 @@ tr.off{opacity:.45}
   var DATOS_REMOTOS = 'https://ttolabs.github.io/btolabs-panel/datos.json';
   var WEB = 'https://ttolabs.github.io/btolabs-panel/';
   // La versión vive en DOS lugares y se sube en cada APK nueva: aquí (la que trae la app) y en docs/version.json (la publicada).
-  var APP_VERSION = 3;
+  var APP_VERSION = 4;
   var VERSION_URL = 'https://ttolabs.github.io/btolabs-panel/version.json';
   var esApp = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 
@@ -257,15 +257,20 @@ tr.off{opacity:.45}
   /* ---------- Presupuesto por ítem: la gerencia marca lo que quiere; el total se calcula en pantalla ---------- */
   var SEL = {};
   function clp(n) { return '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  var COLS = [['grupovl', 'Grupo VL'], ['suat', 'SUAT'], ['tresur', 'Tresur'], ['maquinfra', 'Maquinfra'], ['transversal', 'Todo el grupo']];
   function actualizarTotal() {
-    var tot = 0, n = 0;
+    var tot = 0, n = 0, col = {};
+    COLS.forEach(function (c) { col[c[0]] = 0; });
     D.plan.presupuesto.items.forEach(function (it) {
-      var on = SEL[it.id] !== false; if (on) { tot += it.precio; n++; }
+      var on = SEL[it.id] !== false;
+      if (on) { tot += it.precio; n++; COLS.forEach(function (c) { col[c[0]] += it.reparto[c[0]]; }); }
       var fila = document.querySelector('tr[data-fila="' + it.id + '"]'); if (fila) fila.classList.toggle('off', !on);
       var c = document.querySelector('input[data-pid="' + it.id + '"]'); if (c) c.checked = on;
     });
     var a = document.getElementById('pres-tot'), b = document.getElementById('pres-n');
     if (a) a.textContent = clp(tot); if (b) b.textContent = n + ' de ' + D.plan.presupuesto.items.length + ' ítems elegidos';
+    COLS.forEach(function (c) { var e = document.getElementById('pres-c-' + c[0]); if (e) e.textContent = clp(col[c[0]]); });
+    var e2 = document.getElementById('pres-c-total'); if (e2) e2.textContent = clp(tot);
   }
   function vPresupuesto() {
     var P = D.plan.presupuesto;
@@ -273,11 +278,15 @@ tr.off{opacity:.45}
     h += '<p class="aviso"><b>' + esc(P.estado) + '.</b> ' + esc(P.nota) + '</p>';
     h += '<div class="acciones no-print" style="margin-bottom:12px"><button class="btn pri" type="button" data-pkg="todo">Elegir todo</button>' +
       P.paquetes.map(function (p, i) { return '<button class="btn" type="button" data-pkg="' + i + '">Solo ' + esc(p.nombre) + '</button>'; }).join('') + '</div>';
-    h += '<div class="card tabla"><table><thead><tr><th class="no-print">Elegir</th><th>Fase</th><th>Ítem</th><th>Qué incluye</th><th>Precio</th></tr></thead><tbody>' +
+    var cel = function (v) { return '<td style="white-space:nowrap;text-align:right">' + (v ? clp(v) : '—') + '</td>'; };
+    h += '<div class="card tabla"><table><thead><tr><th class="no-print">Elegir</th><th>Fase</th><th>Ítem</th><th>Qué incluye</th><th>Total del grupo</th>' +
+      COLS.map(function (c) { return '<th style="text-align:right">' + esc(c[1]) + '</th>'; }).join('') + '</tr></thead><tbody>' +
       P.items.map(function (it) {
-        return '<tr data-fila="' + it.id + '"><td class="no-print"><input class="chk" type="checkbox" data-pid="' + it.id + '" aria-label="Elegir ' + esc(it.titulo) + '" checked></td><td>' + esc(it.fase) + '</td><td><b>' + esc(it.titulo) + '</b></td><td>' + esc(it.incluye) + '</td><td style="white-space:nowrap"><b>' + clp(it.precio) + '</b></td></tr>';
-      }).join('') + '</tbody></table></div>';
-    h += '<div class="card" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between"><div><h2 style="margin:0 0 4px">Total elegido</h2><span id="pres-n" class="sub"></span></div><span id="pres-tot" class="tot"></span></div>';
+        return '<tr data-fila="' + it.id + '"><td class="no-print"><input class="chk" type="checkbox" data-pid="' + it.id + '" aria-label="Elegir ' + esc(it.titulo) + '" checked></td><td>' + esc(it.fase) + '</td><td><b>' + esc(it.titulo) + '</b></td><td>' + esc(it.incluye) + '</td><td style="white-space:nowrap"><b>' + clp(it.precio) + '</b></td>' +
+          COLS.map(function (c) { return cel(it.reparto[c[0]]); }).join('') + '</tr>';
+      }).join('') + '</tbody><tfoot><tr><td class="no-print"></td><td colspan="3"><b>Total elegido</b></td><td style="white-space:nowrap"><b id="pres-c-total"></b></td>' +
+      COLS.map(function (c) { return '<td style="white-space:nowrap;text-align:right"><b id="pres-c-' + c[0] + '"></b></td>'; }).join('') + '</tr></tfoot></table></div>';
+    h += '<div class="card" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between"><div><h2 style="margin:0 0 4px">Total para todo el grupo</h2><span id="pres-n" class="sub"></span></div><span id="pres-tot" class="tot"></span></div>';
     return h;
   }
 
@@ -299,7 +308,7 @@ tr.off{opacity:.45}
       return [s.nombre, s.url, notaWeb(s), c.rendimiento, c.seo, c.accesibilidad, c.buenas_practicas, e.rendimiento, (s.seo || {}).h1 ? 'Sí' : 'No', (s.seo || {}).meta_description ? 'Sí' : 'No', (s.contenido || {}).ultima_entrada || 'Ninguna'];
     }));
     if (id === 'linkedin') return [['Página', 'URL', 'Seguidores', 'Empleados', 'Última publicación', 'Publicaciones 3 meses', 'Interacción últimas 5']].concat(D.linkedin.map(function (l) { return [l.pagina, l.url, l.seguidores, l.empleados, l.ultima_publicacion, l.publicaciones_3m, l.interaccion_ultimas5]; }));
-    if (id === 'presupuesto') return [['Fase', 'Ítem', 'Qué incluye', 'Precio (CLP)', 'Elegido']].concat(D.plan.presupuesto.items.map(function (it) { return [it.fase, it.titulo, it.incluye, it.precio, SEL[it.id] === false ? 'No' : 'Sí']; }));
+    if (id === 'presupuesto') return [['Fase', 'Ítem', 'Qué incluye', 'Total del grupo (CLP)', 'Grupo VL', 'SUAT', 'Tresur', 'Maquinfra', 'Todo el grupo', 'Elegido']].concat(D.plan.presupuesto.items.map(function (it) { return [it.fase, it.titulo, it.incluye, it.precio, it.reparto.grupovl, it.reparto.suat, it.reparto.tresur, it.reparto.maquinfra, it.reparto.transversal, SEL[it.id] === false ? 'No' : 'Sí']; }));
     if (id === 'plan') return [['Fase', 'Problema', 'Qué lo causa', 'Solución', 'Se necesita', 'Esfuerzo (estimado)']].concat(D.plan.filas.map(function (f) { return [f.fase, f.problema, f.causa, f.solucion, f.necesita, f.esfuerzo]; }), [[]], [['Costo de terceros', 'Uso', 'Precio', 'Nota']], D.plan.costos.terceros.map(function (x) { return [x.herramienta, x.uso, x.precio, x.nota]; }));
     if (id === 'accesos') return [['Plataforma', 'Empresa', 'Estado', 'Rol', 'Cuenta', 'Notas']].concat(D.accesos.map(function (a) { return [a.plataforma, a.empresa, a.estado, a.rol, a.cuenta, a.notas]; }));
     if (id === 'confirmar') { var f = [['Grupo', 'Dato a confirmar']]; D.confirmar.forEach(function (g) { g.items.forEach(function (x) { f.push([g.grupo, x]); }); }); return f; }
