@@ -112,7 +112,7 @@ tr.off{opacity:.45}
   var DATOS_REMOTOS = 'https://ttolabs.github.io/btolabs-panel/datos.json';
   var WEB = 'https://ttolabs.github.io/btolabs-panel/';
   // La versión vive en DOS lugares y se sube en cada APK nueva: aquí (la que trae la app) y en docs/version.json (la publicada).
-  var APP_VERSION = 4;
+  var APP_VERSION = 5;
   var VERSION_URL = 'https://ttolabs.github.io/btolabs-panel/version.json';
   var esApp = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 
@@ -268,7 +268,7 @@ tr.off{opacity:.45}
       var c = document.querySelector('input[data-pid="' + it.id + '"]'); if (c) c.checked = on;
     });
     var a = document.getElementById('pres-tot'), b = document.getElementById('pres-n');
-    if (a) a.textContent = clp(tot); if (b) b.textContent = n + ' de ' + D.plan.presupuesto.items.length + ' ítems elegidos';
+    if (a) a.textContent = clp(tot); if (b) b.textContent = n + ' de ' + D.plan.presupuesto.items.length + ' mejoras elegidas · un solo total para las 4 empresas, pago único';
     COLS.forEach(function (c) { var e = document.getElementById('pres-c-' + c[0]); if (e) e.textContent = clp(col[c[0]]); });
     var e2 = document.getElementById('pres-c-total'); if (e2) e2.textContent = clp(tot);
   }
